@@ -5,9 +5,8 @@ import org.compilers.grammar.model.production.Production;
 import org.compilers.grammar.model.vocab.terminal.Terminal;
 import org.compilers.grammar.model.vocab.Vocab;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public final class Grammar {
@@ -101,5 +100,66 @@ public final class Grammar {
 
         final Vocab vocab = left.get(0);
         return vocab.isNonTerminal();
+    }
+
+    // First_1
+    public Map<NonTerminal, HashSet<String>> first() {
+        final var terminalsFirst = initializeTerminalsFirst();
+        var previousFirst = initializeNonTerminalsFirst();
+
+        var changed = true;
+        while (changed) {
+            changed = false;
+
+            var currentFirst = previousFirst
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> new HashSet<>(entry.getValue())
+                    )); // deep-copy of the previous solution
+
+            for (final var nonTerminal : nonTerminals) { // for each non-terminal
+
+                for (final var production : productions(nonTerminal)) { // contains productions of the nonTerminal
+                    checkNonEmptyFirst(production.right(), previousFirst);
+
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    private static boolean checkNonEmptyFirst(final List<Vocab> rightSide, final Map<NonTerminal, Set<String>> previousIteration) {
+        return rightSide.stream().filter(Vocab::isNonTerminal).noneMatch(it -> previousIteration.get(it).isEmpty());
+    }
+
+    private Map<NonTerminal, HashSet<String>> initializeNonTerminalsFirst() {
+        final var resultSet = nonTerminals.stream().collect(Collectors.toMap(
+                nonTerminal -> nonTerminal,
+                nonTerminal -> new HashSet<String>()
+        ));
+
+        for (final var nonTerminal : nonTerminals) { // for each non-terminal
+
+            for (final var production : productions(nonTerminal)) { // contains productions of the nonTerminal
+                final var firstSymbolOfProduction = production.right().get(0); // first symbol of production
+
+                if (firstSymbolOfProduction.isTerminal()) {
+                    resultSet.get(nonTerminal).add(firstSymbolOfProduction.value());
+                }
+            }
+        }
+
+        return resultSet;
+    }
+
+    private Map<Terminal, Set<String>> initializeTerminalsFirst() {
+        return terminals.stream().collect(Collectors.toMap(
+                terminal -> terminal,
+                terminal -> Set.of(terminal.value())
+        ));
     }
 }

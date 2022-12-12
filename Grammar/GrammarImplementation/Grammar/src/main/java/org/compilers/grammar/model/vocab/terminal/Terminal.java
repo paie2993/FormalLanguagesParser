@@ -13,6 +13,7 @@ public final class Terminal implements Vocab {
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }

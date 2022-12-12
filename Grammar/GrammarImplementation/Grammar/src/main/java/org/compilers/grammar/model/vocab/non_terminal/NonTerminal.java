@@ -13,6 +13,7 @@ public final class NonTerminal implements Vocab {
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }

@@ -5,4 +5,6 @@ public interface Vocab {
     boolean isTerminal();
 
     boolean isNonTerminal();
+
+    String value();
 }
