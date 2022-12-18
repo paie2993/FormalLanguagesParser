@@ -13,6 +13,7 @@ public final class Production {
     private final List<Symbol> leftSide;
     private final List<Symbol> rightSide;
 
+
     public Production(final List<Symbol> leftSide, final List<Symbol> rightSide) {
         Objects.requireNonNull(leftSide);
         Objects.requireNonNull(rightSide);
