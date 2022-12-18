@@ -21,6 +21,17 @@ public final class Production {
         this.rightSide = rightSide;
     }
 
+    @Override
+    public String toString() {
+        return prepareListForPrinting(leftSide) + SIDES_SEPARATOR + prepareListForPrinting(rightSide);
+    }
+
+    private static String prepareListForPrinting(final List<Symbol> list) {
+        final var builder = new StringBuilder();
+        list.forEach(builder::append);
+        return builder.toString();
+    }
+
     public List<Symbol> leftSide() {
         return leftSide;
     }
