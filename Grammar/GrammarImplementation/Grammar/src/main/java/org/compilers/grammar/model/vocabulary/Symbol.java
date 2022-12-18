@@ -3,6 +3,7 @@ package org.compilers.grammar.model.vocabulary;
 import java.util.Objects;
 
 public abstract class Symbol {
+
     private final String value;
 
     public Symbol(final String value) {
@@ -14,15 +15,15 @@ public abstract class Symbol {
         return this.value;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
         if (o == null || this.getClass() != o.getClass())
             return false;
-        Symbol symbol = (Symbol) o;
-        return Objects.equals(this.value, symbol.value);
+        final var other = (Symbol) o;
+        return Objects.equals(other.value, this.value);
     }
 
     @Override
