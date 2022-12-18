@@ -10,14 +10,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Grammar {
+
     public static final String EPSILON = "epsilon";
 
     private final Set<NonTerminal> nonTerminals;
-
     private final Set<Terminal> terminals;
-
     private final Set<Production> productions;
-
     private final NonTerminal startingNonTerminal;
 
 
@@ -55,22 +53,36 @@ public class Grammar {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Returns all the productions of the given non-terminal
      * If the non-terminal is not part of the grammar, returns empty set
      */
-    public Set<Production> productions(final NonTerminal nonTerminal) {
-        return this.productions.stream()
-                .filter(it -> it.leftSide().size() == 1 && nonTerminal.equals(it.leftSide().get(0)))
+    public Set<Production> productionsOf(final NonTerminal nonTerminal) {
+        return productions.stream()
+                .filter(production -> equalsNonTerminal(production.leftSide(), nonTerminal))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public Set<Production> rightSideProductions(final NonTerminal nonTerminal) {
-        return this.productions.stream()
-                .filter(production -> production.rightSide().contains(nonTerminal))
+    // checks if a side is equals to a symbol (true if side has single symbol)
+    private boolean equalsNonTerminal(final List<Symbol> side, final Symbol nonTerminal) {
+        if (!(side.size() == 1)) {
+            return false;
+        }
+        final var singleSymbol = side.get(0);
+        return nonTerminal.equals(singleSymbol);
+    }
+
+    // set of productions in which the given symbol appears in the right-side
+    // if the symbol does not appear in any right side, returns empty side
+    public Set<Production> inRightSide(final Symbol symbol) {
+        return productions.stream()
+                .filter(production -> production.rightSide().contains(symbol))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Checks if the given non-terminal belongs to the set of non-terminals
@@ -86,37 +98,13 @@ public class Grammar {
         return Terminal.class.equals(terminal.getClass()) && terminals.contains(terminal);
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Checks if the grammar is context free
      */
     public boolean isContextFree() {
-        return this.productions.stream().allMatch(Grammar::isContextFreeProduction);
-    }
-
-    public static Set<String> concatenate1(final List<Set<String>> symbols) {
-        if (symbols.isEmpty()) {
-            throw new IllegalArgumentException("Can't do it with empty list");
-        }
-
-        if (symbols.size() == 1) {
-            return symbols.get(0);
-        }
-
-        return concatenate1(symbols.get(0), concatenate1(symbols.subList(1, symbols.size())));
-    }
-
-    /**
-     * Concatenation of length 1 for a pair of sets
-     */
-    private static Set<String> concatenate1(final Set<String> first, final Set<String> second) {
-        if (first.contains(Grammar.EPSILON)) {
-            return Stream.concat(
-                    first.stream()
-                            .filter(symbol -> !Grammar.EPSILON.equals(symbol)),
-                    second.stream()
-            ).collect(Collectors.toUnmodifiableSet());
-        }
-        return first;
+        return productions.stream().allMatch(Grammar::isContextFreeProduction);
     }
 
     /**
@@ -132,49 +120,98 @@ public class Grammar {
         return NonTerminal.class.equals(leftSide.get(0).getClass());
     }
 
-
-    // First_1
-    public Map<Symbol, Set<String>> first() {
-        Map<Symbol, Set<String>> previousFirst = Stream.concat(
-                initializeTerminalsFirst().entrySet().stream(),
-                initializeNonTerminalsFirst().entrySet().stream()
-        ).collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue
-        ));
-//        added the epsilon as a terminal for brevity and removed it at the end
-        previousFirst.put(new Terminal(Grammar.EPSILON), Set.of(Grammar.EPSILON));
-
-        while (true) {
-            final Map<Symbol, Set<String>> currentFirst = previousFirst.entrySet().stream()
-                    .collect(Collectors.toMap(
-                            Map.Entry::getKey,
-                            entry -> new HashSet<>(entry.getValue())
-                    )); // deep-copy of the previous solution
-
-            for (final NonTerminal nonTerminal : nonTerminals) { // for each non-terminal
-
-                for (final Production production : productions(nonTerminal)) { // contains productions of the nonTerminal
-                    if (checkNonEmptyFirst(production.rightSide(), previousFirst)) {
-//                        extract previous first for each symbol of the right side
-                        final List<Set<String>> rightSidePreviousFirst = production
-                                .rightSide()
-                                .stream()
-                                .map(previousFirst::get)
-                                .toList();
-                        currentFirst.get(nonTerminal).addAll(concatenate1(rightSidePreviousFirst));
-                    }
-                }
-
-            }
-            if (currentFirst.equals(previousFirst)) {
-                break;
-            }
-            previousFirst = currentFirst;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // a recursive method which keeps concatenating the sets of symbols from the tail of the input list until the start <br>
+    // in other words, it first concatenates the last two sets, then concatenates the 3rd set from the list with the <br>
+    // concatenation of the last two sets, then ... and so on
+    public static Set<String> concatenate1(final List<Set<String>> symbols) {
+        if (symbols.isEmpty()) {
+            throw new IllegalArgumentException("Can't do it with empty list");
         }
 
+        if (symbols.size() == 1) {
+            return symbols.get(0);
+        }
 
-        return previousFirst.entrySet().stream()
+        final var firstSet = symbols.get(0); // first set from the input sets of symbols
+        final var otherSets = symbols.subList(1, symbols.size()); // slice with the rest of the sets of symbols
+
+        final var otherSetsConcatenation = concatenate1(otherSets);
+        return concatenate1(firstSet, otherSetsConcatenation);
+    }
+
+    /**
+     * Concatenation of length 1 for a pair of sets
+     * Is public for testing purposes
+     */
+    public static Set<String> concatenate1(final Set<String> first, final Set<String> second) {
+        if (first.contains(Grammar.EPSILON)) {
+            return Stream.concat(
+                    first.stream().filter(symbol -> !Grammar.EPSILON.equals(symbol)),
+                    second.stream()
+            ).collect(Collectors.toUnmodifiableSet());
+        }
+        return first;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // this section is dedicated to the implementation of the first1 method
+    public Map<? extends Symbol, ? extends Set<String>> first() {
+
+        var previousResultSets = initializeResultSets();
+        enrichWithEpsilon(previousResultSets); // added the epsilon as a terminal for brevity and removed it at the end
+
+        boolean done = false;
+        while (!done) {
+            final var currentResultSets = oneIterationOfFirst(previousResultSets);
+
+            if (!currentResultSets.equals(previousResultSets)) { // otherwise, continue the algorithm, and go to the next iteration
+                previousResultSets = currentResultSets;
+            } else { // no change compared to the previous result sets, meaning that the algorithm is finished
+                done = true;
+            }
+        }
+
+        // previousResultSets contains at this point the complete result sets, because the last iteration <br>
+        // of the loop does not update 'previousResultSets'
+        return trimEpsilon(previousResultSets);
+    }
+
+    // enriches the result sets of each non-terminal
+    private Map<Symbol, Set<String>> oneIterationOfFirst(final Map<Symbol, Set<String>> previousResultSets) {
+        // initializes the current (working) result sets with the result sets from the previous iteration
+        final var currentResultSets = copyResultSets(previousResultSets);
+
+        for (final var nonTerminal : nonTerminals) { // for each non-terminal
+            for (final var production : productionsOf(nonTerminal)) { // for each production of the nonTerminal
+                if (areNonEmptyResultSets(production, previousResultSets)) {
+                    // result of applying the first1 function on the right side of the current production (where
+                    // each production belongs to the currently iterated non-terminal)
+                    final var previousResultSetsOfProductionSymbols =
+                            previousResultSetsOfProductionSymbols(production, previousResultSets);
+
+                    // apply concatenate1 to extend the result sets of the current non-terminal
+                    final var currentProductionResultSetsConcatenate1 = concatenate1(previousResultSetsOfProductionSymbols);
+
+                    // add newly obtained 'first1' results sets to the already existing ones
+                    currentResultSets.get(nonTerminal).addAll(currentProductionResultSetsConcatenate1);
+                } // else, there is no point in enriching the solution, because applying concatenate1 on a set of <br>
+                // sets, one of which is empty, would result in an empty set anyway
+            }
+        }
+        return currentResultSets;
+    }
+
+    // does what its name implies
+    private static List<Set<String>> previousResultSetsOfProductionSymbols(
+            final Production production, final Map<Symbol, Set<String>> previousResultSets
+    ) {
+        return production.rightSide().stream().map(previousResultSets::get).toList();
+    }
+
+    // eliminate epsilon from the result sets, if any exists
+    private static Map<? extends Symbol, ? extends Set<String>> trimEpsilon(final Map<? extends Symbol, ? extends Set<String>> resultSets) {
+        return resultSets.entrySet().stream()
                 .filter(entry -> !Grammar.EPSILON.equals(entry.getKey().value()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -182,6 +219,8 @@ public class Grammar {
                 ));
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // follow1 method
     public Map<NonTerminal, Set<String>> follow() {
         Map<NonTerminal, Set<String>> previousFollow = initializeNonTerminalsFollow();
         while (true) {
@@ -192,7 +231,7 @@ public class Grammar {
                     ));
 
             for (final NonTerminal nonTerminal : nonTerminals) {
-                for (final Production production : rightSideProductions(nonTerminal)) {
+                for (final Production production : inRightSide(nonTerminal)) {
                     List<Symbol> rightSide = production.rightSide();
                     if (rightSide.indexOf(nonTerminal) == rightSide.size() - 1) {
                         currentFollow.get(nonTerminal).addAll(previousFollow.get((NonTerminal) production.leftSide().get(0)));
@@ -230,24 +269,56 @@ public class Grammar {
                 ));
     }
 
-
-    private static boolean checkNonEmptyFirst(final List<Symbol> rightSide, final Map<Symbol, Set<String>> previousIteration) {
-        return rightSide.stream().noneMatch(it -> previousIteration.get(it).isEmpty());
+    // return true if there isn't any symbol whose result set is empty
+    // in other words, returns true if all the symbols have something in their result set
+    // in other words, returns false if there is at least a symbol whose result set is empty
+    private static boolean areNonEmptyResultSets(final Production production, final Map<Symbol, Set<String>> previousIterationResultSets) {
+        return production.rightSide().stream().noneMatch(symbol -> resultSetOfSymbolIsEmpty(symbol, previousIterationResultSets));
     }
 
-    private Map<Symbol, Set<String>> initializeNonTerminalsFirst() {
-        final Map<Symbol, Set<String>> resultSet = nonTerminals.stream()
-                .collect(Collectors.toMap(
-                        nonTerminal -> nonTerminal,
-                        nonTerminal -> new HashSet<>())
-                );
+    // true if result set of given symbol is empty
+    private static boolean resultSetOfSymbolIsEmpty(final Symbol symbol, final Map<Symbol, Set<String>> iterationResultSets) {
+        return iterationResultSets.get(symbol).isEmpty();
+    }
 
-        for (final NonTerminal nonTerminal : nonTerminals) { // for each non-terminal
-            for (final Production production : productions(nonTerminal)) { // contains productions of the nonTerminal
+    private static Map<Symbol, Set<String>> copyResultSets(final Map<Symbol, Set<String>> resultSet) {
+        return resultSet.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> new HashSet<>(entry.getValue())
+                ));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // this section is dedicated to initializing result sets of the first and follow algorithm
+
+    // initializes the result set of first
+    private Map<Symbol, Set<String>> initializeResultSets() {
+        return Stream.concat(
+                initializeTerminalsFirst().entrySet().stream(),
+                initializeNonTerminalsFirst().entrySet().stream()
+        ).collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue
+        ));
+    }
+
+    // initializes the terminals result set
+    private Map<? extends Symbol, ? extends Set<String>> initializeTerminalsFirst() {
+        return buildResultSetDataStructure(terminals);
+    }
+
+    // initializes the non-terminals result set
+    private Map<? extends Symbol, ? extends Set<String>> initializeNonTerminalsFirst() {
+        final var resultSet = buildResultSetDataStructure(nonTerminals);
+
+        for (final var nonTerminal : nonTerminals) { // for each non-terminal ...
+            for (final var production : productionsOf(nonTerminal)) { //  productions of the nonTerminal
                 final Symbol firstSymbolOfProduction = production.rightSide().get(0); // first symbol of the production
 
-                if (Terminal.class.equals(firstSymbolOfProduction.getClass())) {
-                    resultSet.get(nonTerminal).add(firstSymbolOfProduction.value());
+                if (isTerminal(firstSymbolOfProduction)) {
+                    final var resultSetOfNonTerminal = resultSet.get(nonTerminal);
+                    resultSetOfNonTerminal.add(firstSymbolOfProduction.value());
                 }
             }
         }
@@ -255,11 +326,23 @@ public class Grammar {
         return resultSet;
     }
 
-    private Map<Symbol, Set<String>> initializeTerminalsFirst() {
-        return terminals.stream()
-                .collect(Collectors.toMap(
-                        terminal -> terminal,
-                        terminal -> Set.of(terminal.value()))
-                );
+    // lays out the structure of the result set (one column from the first/follow algorithm, check seminar notes)
+    private static Map<? extends Symbol, ? extends Set<String>> buildResultSetDataStructure(final Set<? extends Symbol> symbols) {
+        return symbols.stream().collect(Collectors.toMap(
+                terminal -> terminal,
+                terminal -> Set.of(terminal.value()))
+        );
+    }
+
+    private static void enrichWithEpsilon(final Map<? super Symbol, ? super Set<String>> resultSet) {
+        final var epsilonTerminal = new Terminal(Grammar.EPSILON);
+        final var epsilonSet = (Set<String>) Set.of(Grammar.EPSILON);
+        resultSet.put(epsilonTerminal, epsilonSet);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // distinguish between terminals and non-terminals
+    private static boolean isTerminal(final Symbol symbol) {
+        return Terminal.class.equals(symbol.getClass());
     }
 }

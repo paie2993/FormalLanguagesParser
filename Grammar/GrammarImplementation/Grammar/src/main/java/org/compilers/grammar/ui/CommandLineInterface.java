@@ -13,7 +13,7 @@ import java.util.StringJoiner;
 
 public final class CommandLineInterface {
 
-    private static final String grammarFile = "src/main/java/org/compilers/grammar/g2.txt";
+    private static final String grammarFile = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/g1.txt";
 
     private final Grammar grammar;
 
@@ -110,7 +110,7 @@ public final class CommandLineInterface {
 
 
     private void printProductionsOfNonTerminal(final NonTerminal nonTerminal) {
-        final var productions = grammar.productions(nonTerminal);
+        final var productions = grammar.productionsOf(nonTerminal);
         productions.forEach(System.out::println);
     }
 

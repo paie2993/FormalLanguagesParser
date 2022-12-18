@@ -18,11 +18,10 @@ public final class GrammarReader {
 
     public static Grammar readGrammar(final String fileName) throws IOException {
         try (final BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+
             final Set<NonTerminal> nonTerminals = readNonTerminals(reader);
             final Set<Terminal> terminals = readTerminals(reader);
-
             final Set<Production> productions = readProductions(reader, new ProductionBuilder(nonTerminals, terminals));
-
             final var startingNonTerminal = readStartingNonTerminal(reader);
 
             return new Grammar(nonTerminals, terminals, productions, startingNonTerminal);
