@@ -169,7 +169,7 @@ public class Grammar {
         var previousResultSets = initializeResultSets(terminals, nonTerminals, productions);
         enrichWithEpsilon(previousResultSets); // added the epsilon as a terminal for brevity and removed it at the end
 
-        boolean done = false;
+        var done = false;
         while (!done) {
             final var currentResultSets = oneIterationOfFirst(nonTerminals, productions, previousResultSets);
 
@@ -235,7 +235,9 @@ public class Grammar {
     // follow1 method
     public Map<NonTerminal, Set<String>> follow() {
         Map<NonTerminal, Set<String>> previousFollow = initializeNonTerminalsFollow();
-        while (true) {
+
+        var done = false;
+        while (!done) {
             final Map<NonTerminal, Set<String>> currentFollow = previousFollow.entrySet().stream()
                     .collect(Collectors.toMap(
                             Map.Entry::getKey,
@@ -245,10 +247,19 @@ public class Grammar {
             for (final NonTerminal nonTerminal : nonTerminals) {
                 for (final Production production : inRightSide(nonTerminal)) {
                     List<Symbol> rightSide = production.rightSide();
+
+                    // if the current non-terminal appears as the last symbol on the right side of the current production <br>
+                    // then add the 'follow' of the non-terminal from the left side of the production ot the 'follow' of <br>
+                    // the current non-terminal
                     if (rightSide.indexOf(nonTerminal) == rightSide.size() - 1) {
                         currentFollow.get(nonTerminal).addAll(previousFollow.get((NonTerminal) production.leftSide().get(0)));
                         continue;
                     }
+
+                    // otherwise, get the 'first' of the symbol immediately to the right of the current non-terminal <br>
+                    // and add it to the follow of the current non-terminal <br>
+                    // if 'epsilon' is in the 'first' of the next symbol after the current non-terminal, then also add
+                    // the 'follow' of the left side of the current production to the 'follow' of the current non-terminal
                     Symbol gamma = rightSide.get(rightSide.indexOf(nonTerminal) + 1);
                     if (first(terminals, nonTerminals, productions).get(gamma).contains(Grammar.EPSILON)) {
                         currentFollow.get(nonTerminal).addAll(previousFollow.get((NonTerminal) production.leftSide().get(0)));
@@ -259,10 +270,11 @@ public class Grammar {
                 }
             }
 
-            if (currentFollow.equals(previousFollow)) {
-                break;
+            if (!currentFollow.equals(previousFollow)) {
+                previousFollow = currentFollow;
+            } else {
+                done = true;
             }
-            previousFollow = currentFollow;
         }
 
         return previousFollow;
