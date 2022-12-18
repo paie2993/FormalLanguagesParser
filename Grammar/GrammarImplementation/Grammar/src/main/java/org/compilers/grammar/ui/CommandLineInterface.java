@@ -1,8 +1,9 @@
 package org.compilers.grammar.ui;
 
-import org.compilers.grammar.model.Grammar;
-import org.compilers.grammar.model.GrammarReader;
-import org.compilers.grammar.model.vocab.non_terminal.NonTerminal;
+
+import org.compilers.grammar.model.grammar.Grammar;
+import org.compilers.grammar.model.grammar.GrammarReader;
+import org.compilers.grammar.model.vocabulary.NonTerminal;
 
 import java.io.IOException;
 import java.util.Optional;
