@@ -1,9 +1,9 @@
-package org.compilers.grammar.model;
+package org.compilers.grammar.model.grammar;
 
-import org.compilers.grammar.model.vocab.non_terminal.NonTerminal;
 import org.compilers.grammar.model.production.Production;
 import org.compilers.grammar.model.production.ProductionBuilder;
-import org.compilers.grammar.model.vocab.terminal.Terminal;
+import org.compilers.grammar.model.vocabulary.NonTerminal;
+import org.compilers.grammar.model.vocabulary.Terminal;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,18 +14,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class GrammarReader {
-
     private static final String SEPARATOR = ";";
-
 
     public static Grammar readGrammar(final String fileName) throws IOException {
         try (final BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            final Set<NonTerminal> nonTerminals = readNonTerminals(reader);
+            final Set<Terminal> terminals = readTerminals(reader);
 
-            final var nonTerminals = readNonTerminals(reader);
-            final var terminals = readTerminals(reader);
-
-            final var productionBuilder = new ProductionBuilder(nonTerminals, terminals);
-            final var productions = readProductions(reader, productionBuilder);
+            final Set<Production> productions = readProductions(reader, new ProductionBuilder(nonTerminals, terminals));
 
             final var startingNonTerminal = readStartingNonTerminal(reader);
 
@@ -33,31 +29,25 @@ public final class GrammarReader {
         }
     }
 
-
     // reading and building of grammar elements
     private static Set<Terminal> readTerminals(final BufferedReader reader) throws IOException {
-        final String[] terminals = readTokens(reader);
-        return buildElements(terminals, Terminal::new);
+        return buildElements(readTokens(reader), Terminal::new);
     }
 
     private static Set<NonTerminal> readNonTerminals(final BufferedReader reader) throws IOException {
-        final String[] nonTerminals = readTokens(reader);
-        return buildElements(nonTerminals, NonTerminal::new);
+        return buildElements(readTokens(reader), NonTerminal::new);
     }
 
     private static Set<Production> readProductions(
             final BufferedReader reader,
             final ProductionBuilder productionBuilder
     ) throws IOException {
-        final String[] productions = readTokens(reader);
-        return buildElements(productions, productionBuilder::buildProduction);
+        return buildElements(readTokens(reader), productionBuilder::buildProduction);
     }
 
     private static NonTerminal readStartingNonTerminal(final BufferedReader reader) throws IOException {
-        final String nonTerminalString = readLine(reader);
-        return new NonTerminal(nonTerminalString);
+        return new NonTerminal(readLine(reader));
     }
-
 
     /**
      * Applies the builder to each token from [tokens]
@@ -70,8 +60,7 @@ public final class GrammarReader {
      * Reads a set of tokens from the buffer
      */
     private static String[] readTokens(final BufferedReader reader) throws IOException {
-        final String line = readLine(reader);
-        return line.split(SEPARATOR);
+        return readLine(reader).split(SEPARATOR);
     }
 
     /**
