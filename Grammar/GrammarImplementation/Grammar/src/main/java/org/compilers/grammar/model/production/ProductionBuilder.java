@@ -13,17 +13,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ProductionBuilder {
+
     private static final String SYMBOLS_SEPARATOR = "`";
 
     private final Convention convention;
+
 
     public ProductionBuilder(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals) {
         this.convention = new Convention(nonTerminals, terminals);
     }
 
-    public ProductionBuilder(final Grammar grammar) {
-        this.convention = new Convention(grammar.nonTerminals(), grammar.terminals());
-    }
 
     public Production buildProduction(final String productionString) {
         final String[] sides = productionString.split(Production.SIDES_SEPARATOR);
@@ -33,6 +32,10 @@ public class ProductionBuilder {
 
         return new Production(left, right);
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // section dedicated to building each side of the production
 
     /**
      * Builds the left side of the production
@@ -46,7 +49,9 @@ public class ProductionBuilder {
      */
     private List<Symbol> buildRightSide(final String sideString) {
         final var epsilonOptional = specialCase(sideString);
-        return epsilonOptional.<List<Symbol>>map(List::of).orElseGet(() -> buildSide(sideString));
+
+        return epsilonOptional.<List<Symbol>>map(List::of)
+                .orElseGet(() -> buildSide(sideString));
     }
 
     private Optional<Terminal> specialCase(final String rightSide) {
@@ -57,14 +62,14 @@ public class ProductionBuilder {
     }
 
     private List<Symbol> buildSide(final String sideString) {
-        final String[] symbols = processSymbols(sideString);
+        final String[] symbols = splitSideSymbols(sideString);
         return convertSymbols(symbols);
     }
 
     /**
      * Receives one side of the production, and splits the vocabs according to [SYMBOLS_SEPARATOR]
      */
-    private String[] processSymbols(final String sideString) {
+    private String[] splitSideSymbols(final String sideString) {
         return sideString.split(SYMBOLS_SEPARATOR);
     }
 
@@ -78,19 +83,21 @@ public class ProductionBuilder {
     }
 
     private Symbol convertSymbol(final String symbol) {
-        return this.convention.getConverter(symbol).apply(symbol);
+        return convention.getConverter(symbol).apply(symbol);
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private static class Convention {
         private final Set<String> nonTerminalsValues;
         private final Set<String> terminalsValues;
 
         public Convention(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals) {
-            this.nonTerminalsValues = nonTerminals.stream()
-                    .map(Symbol::value)
-                    .collect(Collectors.toUnmodifiableSet());
-            this.terminalsValues = terminals.stream()
+            this.nonTerminalsValues = stringSet(nonTerminals);
+            this.terminalsValues = stringSet(terminals);
+        }
+
+        private static Set<String> stringSet(final Set<? extends Symbol> symbols) {
+            return symbols.stream()
                     .map(Symbol::value)
                     .collect(Collectors.toUnmodifiableSet());
         }
