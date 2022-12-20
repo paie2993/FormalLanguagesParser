@@ -9,13 +9,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Grammar {
+public final class Grammar {
 
     public static final String EPSILON = "epsilon";
 
     private final Set<NonTerminal> nonTerminals;
     private final Set<Terminal> terminals;
-    private final Set<Production> productions;
+    private final List<Production> productions;
     private final NonTerminal startingNonTerminal;
 
 
@@ -32,7 +32,7 @@ public class Grammar {
 
         this.nonTerminals = nonTerminals;
         this.terminals = terminals;
-        this.productions = productions;
+        this.productions = new ArrayList<>(productions);
         this.startingNonTerminal = startingNonTerminal;
     }
 
@@ -44,7 +44,7 @@ public class Grammar {
         return terminals;
     }
 
-    public Set<Production> productions() {
+    public List<Production> productions() {
         return productions;
     }
 
@@ -65,7 +65,7 @@ public class Grammar {
      * Returns all the productions of the given non-terminal
      * If the non-terminal is not part of the grammar, returns empty set
      */
-    public static Set<Production> productionsOf(final Symbol nonTerminal, final Set<Production> productions) {
+    public static Set<Production> productionsOf(final Symbol nonTerminal, final Collection<Production> productions) {
         return productions.stream()
                 .filter(production -> equalsNonTerminal(production.leftSide(), nonTerminal))
                 .collect(Collectors.toUnmodifiableSet());
@@ -161,9 +161,44 @@ public class Grammar {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static Set<String> first(
+            final Set<? extends Symbol> terminals,
+            final Set<? extends Symbol> nonTerminals,
+            final Collection<Production> productions,
+            final List<Symbol> rightSide
+    ) {
+        final var firstResultSets = first(terminals, nonTerminals, productions);
+        final var resultSets = firstResultSets.values();
+
+        return firstAux(firstResultSets, rightSide);
+    }
+
+    private static Set<String> firstAux(
+            final Map<? extends Symbol, ? extends Set<String>> firstResultSets,
+            final List<Symbol> rightSide
+    ) {
+        if (rightSide.size() == 1) {
+            return firstResultSets.get(rightSide.get(0));
+        }
+        return concatenate1(
+                List.of(
+                        firstResultSets.get(rightSide.get(0)),
+                        firstAux(firstResultSets, rightSide.subList(1, rightSide.size()))
+                )
+        );
+    }
+
+    public static Set<String> firstTwo(
+            final Map<? extends Symbol, ? extends Set<String>> first,
+            final Symbol symbol1,
+            final Symbol symbol2
+    ) {
+        return concatenate1(List.of(first.get(symbol1), first.get(symbol2)));
+    }
+
     // this section is dedicated to the implementation of the first1 method
     public static Map<? extends Symbol, ? extends Set<String>> first(
-            final Set<? extends Symbol> terminals, final Set<? extends Symbol> nonTerminals, final Set<Production> productions
+            final Set<? extends Symbol> terminals, final Set<? extends Symbol> nonTerminals, final Collection<Production> productions
     ) {
 
         var previousResultSets = initializeResultSets(terminals, nonTerminals, productions);
@@ -188,7 +223,7 @@ public class Grammar {
     // enriches the result sets of each non-terminal
     private static Map<Symbol, Set<String>> oneIterationOfFirst(
             final Set<? extends Symbol> nonTerminals,
-            final Set<Production> productions,
+            final Collection<Production> productions,
             final Map<Symbol, Set<String>> previousResultSets
     ) {
         // initializes the current (working) result sets with the result sets from the previous iteration
@@ -318,7 +353,7 @@ public class Grammar {
 
     // initializes the result set of first
     private static Map<Symbol, Set<String>> initializeResultSets(
-            final Set<? extends Symbol> terminals, final Set<? extends Symbol> nonTerminals, final Set<Production> productions
+            final Set<? extends Symbol> terminals, final Set<? extends Symbol> nonTerminals, final Collection<Production> productions
     ) {
         return Stream.concat(
                 initializeTerminalsFirst(terminals).entrySet().stream(),
@@ -342,7 +377,7 @@ public class Grammar {
 
     // initializes the non-terminals result set
     private static Map<? extends Symbol, ? extends Set<String>> initializeNonTerminalsFirst(
-            final Set<? extends Symbol> nonTerminals, final Set<Production> productions
+            final Set<? extends Symbol> nonTerminals, final Collection<Production> productions
     ) {
         final var resultSet = buildResultSetDataStructure(nonTerminals);
 
