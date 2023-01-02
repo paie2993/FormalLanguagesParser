@@ -1,4 +1,4 @@
-package org.compilers.grammar.model.vocabulary;
+package org.compilers.grammar.model.grammar.vocabulary;
 
 public interface Terminal extends Symbol {
     static boolean isTerminal(final Symbol symbol) {
