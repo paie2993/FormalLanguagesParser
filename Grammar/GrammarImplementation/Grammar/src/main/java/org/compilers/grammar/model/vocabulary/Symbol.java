@@ -8,6 +8,7 @@ public abstract class Symbol {
 
     public Symbol(final String value) {
         Objects.requireNonNull(value);
+
         this.value = value;
     }
 
@@ -22,7 +23,7 @@ public abstract class Symbol {
         }
         if (o == null || this.getClass() != o.getClass())
             return false;
-        final var other = (Symbol) o;
+        final Symbol other = (Symbol) o;
         return Objects.equals(other.value, this.value);
     }
 
