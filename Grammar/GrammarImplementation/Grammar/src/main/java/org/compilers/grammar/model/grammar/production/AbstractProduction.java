@@ -29,6 +29,16 @@ public abstract class AbstractProduction implements Production {
     }
 
     @Override
+    public boolean hasSymbolInLeftSide(Symbol symbol) {
+        return Production.hasSymbolInSide(symbol, this.leftSide);
+    }
+
+    @Override
+    public boolean hasSymbolInRightSide(Symbol symbol) {
+        return Production.hasSymbolInSide(symbol, this.rightSide);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
