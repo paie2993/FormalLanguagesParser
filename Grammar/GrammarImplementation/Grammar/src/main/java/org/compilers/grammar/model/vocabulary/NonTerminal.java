@@ -1,12 +1,7 @@
 package org.compilers.grammar.model.vocabulary;
 
-public final class NonTerminal extends Symbol {
-
-    public NonTerminal(String value) {
-        super(value);
-    }
-
-    public static boolean isNonTerminal(Symbol symbol) {
+public interface NonTerminal extends Symbol {
+    static boolean isNonTerminal(final Symbol symbol) {
         return symbol instanceof NonTerminal;
     }
 }
