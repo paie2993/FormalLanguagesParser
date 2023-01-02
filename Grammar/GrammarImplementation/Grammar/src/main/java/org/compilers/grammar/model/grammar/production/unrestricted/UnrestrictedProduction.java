@@ -1,5 +1,6 @@
-package org.compilers.grammar.model.grammar.production;
+package org.compilers.grammar.model.grammar.production.unrestricted;
 
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.vocabulary.Symbol;
 
 import java.util.List;

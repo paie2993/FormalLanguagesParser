@@ -1,5 +1,6 @@
-package org.compilers.grammar.model.grammar.production;
+package org.compilers.grammar.model.grammar.production.context_dependent;
 
+import org.compilers.grammar.model.grammar.production.AbstractProduction;
 import org.compilers.grammar.model.grammar.vocabulary.Symbol;
 
 import java.util.List;

@@ -1,5 +1,6 @@
-package org.compilers.grammar.model.grammar.production;
+package org.compilers.grammar.model.grammar.production.context_dependent;
 
+import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
 import org.compilers.grammar.model.grammar.vocabulary.NonTerminal;
 import org.compilers.grammar.model.grammar.vocabulary.Symbol;
 
