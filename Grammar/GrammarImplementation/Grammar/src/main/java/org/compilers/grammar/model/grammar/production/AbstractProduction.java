@@ -10,7 +10,7 @@ public abstract class AbstractProduction implements Production {
     private final List<Symbol> leftSide;
     private final List<Symbol> rightSide;
 
-    public AbstractProduction(List<Symbol> leftSide, List<Symbol> rightSide) {
+    public AbstractProduction(final List<Symbol> leftSide, final List<Symbol> rightSide) {
         Objects.requireNonNull(leftSide);
         Objects.requireNonNull(rightSide);
 
