@@ -1,9 +1,9 @@
 package org.compilers.grammar.model.grammar.production.regular;
 
 import org.compilers.grammar.model.grammar.production.right_linear.RightLinearProduction;
-import org.compilers.grammar.model.grammar.vocabulary.NonTerminal;
+import org.compilers.grammar.model.grammar.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.grammar.vocabulary.Symbol;
-import org.compilers.grammar.model.grammar.vocabulary.Terminal;
+import org.compilers.grammar.model.grammar.vocabulary.terminal.Terminal;
 
 import java.util.List;
 
