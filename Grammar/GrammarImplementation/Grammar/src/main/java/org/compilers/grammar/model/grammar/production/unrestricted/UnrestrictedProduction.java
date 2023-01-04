@@ -1,7 +1,7 @@
 package org.compilers.grammar.model.grammar.production.unrestricted;
 
 import org.compilers.grammar.model.grammar.production.Production;
-import org.compilers.grammar.model.grammar.production.unrestricted.builder.UnrestrictedProductionBuilder;
+import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
 import org.compilers.grammar.model.grammar.production.unrestricted.builder.UnrestrictedProductionBuilderImpl;
 import org.compilers.grammar.model.vocabulary.Symbol;
 
@@ -24,7 +24,7 @@ public interface UnrestrictedProduction extends Production {
         return production instanceof UnrestrictedProduction;
     }
 
-    static UnrestrictedProductionBuilder builder() {
+    static ProductionBuilder<UnrestrictedProduction> builder() {
         return new UnrestrictedProductionBuilderImpl();
     }
 
