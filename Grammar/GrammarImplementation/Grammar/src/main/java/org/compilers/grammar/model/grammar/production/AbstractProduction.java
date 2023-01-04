@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractProduction implements Production {
-    private final List<Symbol> leftSide;
-    private final List<Symbol> rightSide;
+    protected final List<Symbol> leftSide;
+    protected final List<Symbol> rightSide;
 
     public AbstractProduction(final List<Symbol> leftSide, final List<Symbol> rightSide) {
         Objects.requireNonNull(leftSide);
