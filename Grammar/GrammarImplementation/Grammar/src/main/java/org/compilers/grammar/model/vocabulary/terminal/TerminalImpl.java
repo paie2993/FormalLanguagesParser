@@ -1,6 +1,6 @@
-package org.compilers.grammar.model.grammar.vocabulary.terminal;
+package org.compilers.grammar.model.vocabulary.terminal;
 
-import org.compilers.grammar.model.grammar.vocabulary.AbstractSymbol;
+import org.compilers.grammar.model.vocabulary.AbstractSymbol;
 
 public final class TerminalImpl extends AbstractSymbol implements Terminal {
     public TerminalImpl(final String value) {

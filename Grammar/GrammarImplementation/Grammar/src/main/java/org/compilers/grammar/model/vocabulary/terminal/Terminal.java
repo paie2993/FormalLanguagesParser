@@ -1,6 +1,6 @@
-package org.compilers.grammar.model.grammar.vocabulary.terminal;
+package org.compilers.grammar.model.vocabulary.terminal;
 
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 public interface Terminal extends Symbol {
     static boolean isTerminal(final Symbol symbol) {

@@ -1,4 +1,4 @@
-package org.compilers.grammar.model.grammar.vocabulary;
+package org.compilers.grammar.model.vocabulary;
 
 import java.util.Objects;
 
