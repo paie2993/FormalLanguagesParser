@@ -1,9 +1,9 @@
 package org.compilers.grammar.model.grammar;
 
 import org.compilers.grammar.model.grammar.production.Production;
-import org.compilers.grammar.model.grammar.vocabulary.nonterminal.NonTerminal;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
-import org.compilers.grammar.model.grammar.vocabulary.terminal.Terminal;
+import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
+import org.compilers.grammar.model.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
