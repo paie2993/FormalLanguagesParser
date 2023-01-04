@@ -11,13 +11,17 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractGrammar implements Grammar {
+public abstract class AbstractGrammar<T extends Production> implements Grammar {
     private final Set<? extends NonTerminal> nonTerminals;
     private final Set<? extends Terminal> terminals;
-    private final List<? extends Production> productions;
+    private final List<? extends T> productions;
     private final NonTerminal startSymbol;
 
-    public AbstractGrammar(final Set<? extends NonTerminal> nonTerminals, final Set<? extends Terminal> terminals, final Set<? extends Production> productions, final NonTerminal startSymbol) {
+    public AbstractGrammar(
+            final Set<? extends NonTerminal> nonTerminals,
+            final Set<? extends Terminal> terminals,
+            final Set<? extends T> productions,
+            final NonTerminal startSymbol) {
         Objects.requireNonNull(nonTerminals);
         Objects.requireNonNull(terminals);
         Objects.requireNonNull(productions);
@@ -40,7 +44,7 @@ public abstract class AbstractGrammar implements Grammar {
     }
 
     @Override
-    public Set<? extends Production> productions() {
+    public Set<? extends T> productions() {
         return Set.copyOf(this.productions);
     }
 
@@ -66,7 +70,6 @@ public abstract class AbstractGrammar implements Grammar {
     @Override
     public boolean containsProduction(final Production production) {
         Objects.requireNonNull(production);
-
         return this.productions.contains(production);
     }
 
@@ -78,7 +81,7 @@ public abstract class AbstractGrammar implements Grammar {
     }
 
     @Override
-    public Set<? extends Production> haveSymbolInLeftSide(final Symbol symbol) {
+    public Set<? extends T> haveSymbolInLeftSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions
@@ -88,7 +91,7 @@ public abstract class AbstractGrammar implements Grammar {
     }
 
     @Override
-    public Set<? extends Production> haveSymbolInRightSide(final Symbol symbol) {
+    public Set<? extends T> haveSymbolInRightSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions
