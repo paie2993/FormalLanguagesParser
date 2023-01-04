@@ -1,7 +1,9 @@
 package org.compilers.grammar.model.grammar.production.context_free;
 
 import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
 import org.compilers.grammar.model.grammar.production.context_dependent.ContextDependentProduction;
+import org.compilers.grammar.model.grammar.production.context_free.builder.ContextFreeProductionBuilder;
 import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 
@@ -24,5 +26,9 @@ public interface ContextFreeProduction extends ContextDependentProduction {
 
     static boolean isContextFreeProduction(final Production production) {
         return production instanceof ContextFreeProduction;
+    }
+
+    static ProductionBuilder<ContextFreeProduction> builder() {
+        return new ContextFreeProductionBuilder();
     }
 }
