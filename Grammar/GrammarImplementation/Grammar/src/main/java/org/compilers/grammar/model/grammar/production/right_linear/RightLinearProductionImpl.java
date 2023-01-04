@@ -1,7 +1,7 @@
 package org.compilers.grammar.model.grammar.production.right_linear;
 
 import org.compilers.grammar.model.grammar.production.AbstractProduction;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
 

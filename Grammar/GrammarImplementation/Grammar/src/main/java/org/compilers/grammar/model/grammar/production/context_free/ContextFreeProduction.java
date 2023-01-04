@@ -1,7 +1,7 @@
 package org.compilers.grammar.model.grammar.production.context_free;
 
 import org.compilers.grammar.model.grammar.production.context_dependent.ContextDependentProduction;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
 

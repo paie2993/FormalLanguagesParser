@@ -1,7 +1,7 @@
 package org.compilers.grammar.model.grammar.production;
 
 import org.compilers.grammar.model.grammar.Grammar;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
 import java.util.Objects;

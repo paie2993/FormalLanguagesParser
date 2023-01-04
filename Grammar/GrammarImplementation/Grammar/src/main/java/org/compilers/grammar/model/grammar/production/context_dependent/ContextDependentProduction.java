@@ -1,8 +1,8 @@
 package org.compilers.grammar.model.grammar.production.context_dependent;
 
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
-import org.compilers.grammar.model.grammar.vocabulary.nonterminal.NonTerminal;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
 
