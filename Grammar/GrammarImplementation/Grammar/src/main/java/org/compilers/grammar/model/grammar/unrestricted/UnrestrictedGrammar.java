@@ -2,7 +2,7 @@ package org.compilers.grammar.model.grammar.unrestricted;
 
 import org.compilers.grammar.model.grammar.Grammar;
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.Set;
 
