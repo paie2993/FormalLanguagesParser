@@ -1,4 +1,4 @@
-package org.compilers.grammar.model.grammar;
+package org.compilers.grammar.model.grammar.context_free;
 
 import org.compilers.grammar.model.grammar.context_dependent.ContextDependentGrammar;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
