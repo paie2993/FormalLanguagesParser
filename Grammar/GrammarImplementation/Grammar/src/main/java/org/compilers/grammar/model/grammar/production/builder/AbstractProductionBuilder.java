@@ -24,7 +24,7 @@ public abstract class AbstractProductionBuilder implements ProductionBuilder {
         this.convention = new Convention(nonTerminals, terminals);
     }
 
-    private static class Convention {
+    protected static class Convention {
         private final Set<String> nonTerminalsValues;
         private final Set<String> terminalsValues;
 
@@ -33,13 +33,13 @@ public abstract class AbstractProductionBuilder implements ProductionBuilder {
             this.terminalsValues = stringSet(terminals);
         }
 
-        private static Set<String> stringSet(final Set<? extends Symbol> symbols) {
+        public static Set<String> stringSet(final Set<? extends Symbol> symbols) {
             return symbols.stream()
                     .map(Symbol::value)
                     .collect(Collectors.toUnmodifiableSet());
         }
 
-        private Function<String, Symbol> getConverter(final String string) {
+        public Function<String, Symbol> getConverter(final String string) {
             if (terminalsValues.contains(string)) { // terminal
                 return TerminalImpl::new;
             } else if (nonTerminalsValues.contains(string)) { // non-terminal
