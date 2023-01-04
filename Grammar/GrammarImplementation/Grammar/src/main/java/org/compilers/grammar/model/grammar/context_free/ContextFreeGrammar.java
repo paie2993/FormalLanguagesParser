@@ -21,6 +21,46 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
     @Override
     Set<? extends ContextFreeProduction> haveSymbolInLeftSide(final Symbol symbol);
 
+    static Set<String> concatenate1(
+            final List<? extends Set<String>> symbols
+    ) {
+        if (symbols.isEmpty()) {
+            return new HashSet<>(Set.of(""));
+        }
+
+        if (symbols.size() == 1) {
+            return symbols.get(0);
+        }
+
+        final Set<String> firstSet = symbols.get(0);
+        final List<? extends Set<String>> otherSets = symbols.subList(1, symbols.size());
+
+        final Set<String> otherSetsConcatenation = concatenate1(otherSets);
+        return concatenate1(firstSet, otherSetsConcatenation);
+    }
+
+    static Set<String> concatenate1(
+            final Set<String> leftSet,
+            final Set<String> rightSet
+    ) {
+        return leftSet
+                .stream()
+                .flatMap(left -> rightSet
+                        .stream()
+                        .map(right -> concatenate1(left, right)))
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    static String concatenate1(
+            final String left,
+            final String right
+    ) {
+        if (left.isEmpty()) {
+            return right;
+        }
+        return left;
+    }
+
     static Set<ContextFreeProduction> productionsOf(
             final Collection<? extends ContextFreeProduction> productions,
             final NonTerminal nonTerminal
@@ -39,12 +79,12 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
             final Set<? extends NonTerminal> nonTerminals,
             final Collection<? extends ContextFreeProduction> productions
     ) {
+        Map<? extends Symbol, ? extends Set<String>> previousResultSets = initializeFirstResultSets(terminals, nonTerminals, productions);
 
-        Map<? extends Symbol, ? extends Set<String>> previousResultSets = initializeResultSets(terminals, nonTerminals, productions);
-
-        var done = false;
+        boolean done = false;
         while (!done) {
-            final var currentResultSets = oneIterationOfFirst(nonTerminals, productions, previousResultSets);
+            final Map<? extends Symbol, ? extends Set<String>> currentResultSets =
+                    oneIterationOfFirst(nonTerminals, productions, previousResultSets);
 
             if (currentResultSets.equals(previousResultSets)) { // otherwise, continue the algorithm, and go to the next iteration
                 done = true;
@@ -58,13 +98,46 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
         return previousResultSets;
     }
 
+    static Map<? extends NonTerminal, ? extends Set<String>> follow(
+            final Map<? extends Symbol, ? extends Set<String>> first,
+            final Set<? extends NonTerminal> nonTerminals,
+            final NonTerminal startSymbol,
+            final Collection<? extends ContextFreeProduction> productions
+    ) {
+        Map<? extends NonTerminal, ? extends Set<String>> previousResultSets = initializeNonTerminalsFollow(nonTerminals, startSymbol);
+
+        boolean done = false;
+        while (!done) {
+            final Map<? extends NonTerminal, ? extends Set<String>> currentResultSets =
+                    oneIterationOfFollow(first, nonTerminals, productions, previousResultSets);
+
+            if (currentResultSets.equals(previousResultSets)) {
+                done = true;
+            } else {
+                previousResultSets = currentResultSets;
+            }
+        }
+
+        return previousResultSets;
+    }
+
+    static Set<String> first(
+            final Map<? extends Symbol, ? extends Set<String>> first,
+            final List<Symbol> symbols
+    ) {
+        return concatenate1(symbols
+                .stream()
+                .map(first::get)
+                .toList());
+    }
+
     private static Map<? extends Symbol, ? extends Set<String>> oneIterationOfFirst(
             final Set<? extends NonTerminal> nonTerminals,
             final Collection<? extends ContextFreeProduction> productions,
             final Map<? extends Symbol, ? extends Set<String>> previousResultSets
     ) {
         // initializes the current (working) result sets with the result sets from the previous iteration
-        final Map<? extends Symbol, ? extends Set<String>> currentResultSets = copyResultSets(previousResultSets);
+        final Map<? extends Symbol, ? extends Set<String>> currentResultSets = copyFirstResultSets(previousResultSets);
 
         for (final NonTerminal nonTerminal : nonTerminals) { // for each non-terminal
             for (final ContextFreeProduction production : productionsOf(productions, nonTerminal)) { // for each production of the nonTerminal
@@ -87,8 +160,57 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
         return currentResultSets;
     }
 
-    private static Map<? extends Symbol, ? extends Set<String>> copyResultSets(
+    private static Map<? extends NonTerminal, ? extends Set<String>> oneIterationOfFollow(
+            final Map<? extends Symbol, ? extends Set<String>> first,
+            final Set<? extends NonTerminal> nonTerminals,
+            final Collection<? extends ContextFreeProduction> productions,
+            final Map<? extends NonTerminal, ? extends Set<String>> previousResultSets
+    ) {
+        final Map<? extends NonTerminal, ? extends Set<String>> currentResultSets = copyFollowResultSets(previousResultSets);
+
+        for (final NonTerminal nonTerminal : nonTerminals) {
+            for (final ContextFreeProduction production : haveSymbolInRightSide(productions, nonTerminal)) {
+                List<Symbol> rightSide = production.rightSide();
+
+                // if the current non-terminal appears as the last symbol on the right side of the current production
+                // then add the 'follow' of the non-terminal from the left side of the production of the 'follow' of
+                // the current non-terminal
+                if (rightSide.indexOf(nonTerminal) == rightSide.size() - 1) {
+                    currentResultSets.get(nonTerminal).addAll(previousResultSets.get(production.leftSideNonTerminal()));
+                    continue;
+                }
+
+                // otherwise, get the 'first' of the symbol immediately to the right of the current non-terminal <br>
+                // and add it to the follow of the current non-terminal <br>
+                // if 'epsilon' is in the 'first' of the next symbol after the current non-terminal, then also add
+                // the 'follow' of the left side of the current production to the 'follow' of the current non-terminal
+                List<Symbol> gamma = rightSide.subList(rightSide.indexOf(nonTerminal) + 1, rightSide.size());
+                Set<String> firstOfGamma = first(first, gamma);
+                if (firstOfGamma.contains("")) {
+                    currentResultSets.get(nonTerminal).addAll(previousResultSets.get(production.leftSideNonTerminal()));
+                }
+                currentResultSets.get(nonTerminal).addAll(firstOfGamma.stream()
+                        .filter(result -> !result.isEmpty())
+                        .collect(Collectors.toUnmodifiableSet()));
+            }
+        }
+        return currentResultSets;
+    }
+
+    private static Map<? extends Symbol, ? extends Set<String>> copyFirstResultSets(
             final Map<? extends Symbol, ? extends Set<String>> resultSet
+    ) {
+        return resultSet
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> new HashSet<>(entry.getValue())
+                ));
+    }
+
+    private static Map<? extends NonTerminal, ? extends Set<String>> copyFollowResultSets(
+            final Map<? extends NonTerminal, ? extends Set<String>> resultSet
     ) {
         return resultSet
                 .entrySet()
@@ -111,7 +233,7 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
                 .toList();
     }
 
-    private static Map<Symbol, Set<String>> initializeResultSets(
+    private static Map<Symbol, Set<String>> initializeFirstResultSets(
             final Set<? extends Terminal> terminals,
             final Set<? extends NonTerminal> nonTerminals,
             final Collection<? extends ContextFreeProduction> productions
@@ -145,6 +267,10 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
 
         for (final NonTerminal nonTerminal : nonTerminals) { // for each non-terminal ...
             for (final var production : productionsOf(productions, nonTerminal)) { //  productions of the nonTerminal
+                // skip productions that result in epsilon
+                if (production.rightSide().isEmpty()) {
+                    continue;
+                }
                 final Symbol firstSymbolOfProduction = production.rightSide().get(0); // first symbol of the production
 
                 if (Terminal.isTerminal(firstSymbolOfProduction)) {
@@ -155,6 +281,23 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
         }
 
         return resultSet;
+    }
+
+    private static Map<? extends NonTerminal, ? extends Set<String>> initializeNonTerminalsFollow(
+            final Set<? extends NonTerminal> nonTerminals,
+            final NonTerminal startSymbol
+    ) {
+        return nonTerminals
+                .stream()
+                .collect(Collectors.toMap(
+                        nonTerminal -> nonTerminal,
+                        nonTerminal -> {
+                            if (startSymbol.equals(nonTerminal)) {
+                                return new HashSet<>(Set.of(""));
+                            }
+                            return new HashSet<>();
+                        }
+                ));
     }
 
 
@@ -185,38 +328,13 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
         return iterationResultSets.containsKey(symbol) && iterationResultSets.get(symbol).isEmpty();
     }
 
-
-    /////////////////////
-
-    static Set<String> concatenate1(final List<? extends Set<String>> symbols) {
-        if (symbols.isEmpty()) {
-            return Set.of();
-        }
-
-        if (symbols.size() == 1) {
-            return symbols.get(0);
-        }
-
-        final Set<String> firstSet = symbols.get(0);
-        final List<? extends Set<String>> otherSets = symbols.subList(1, symbols.size());
-
-        final Set<String> otherSetsConcatenation = concatenate1(otherSets);
-        return concatenate1(firstSet, otherSetsConcatenation);
-    }
-
-    static Set<String> concatenate1(final Set<String> leftSet, final Set<String> rightSet) {
-        return leftSet
+    private static Collection<? extends ContextFreeProduction> haveSymbolInRightSide(
+            final Collection<? extends ContextFreeProduction> productions,
+            final Symbol symbol
+    ) {
+        return productions
                 .stream()
-                .flatMap(left -> rightSet
-                        .stream()
-                        .map(right -> concatenate1(left, right)))
+                .filter(production -> production.hasSymbolInRightSide(symbol))
                 .collect(Collectors.toUnmodifiableSet());
-    }
-
-    static String concatenate1(final String left, final String right) {
-        if (left.isEmpty()) {
-            return right;
-        }
-        return left;
     }
 }
