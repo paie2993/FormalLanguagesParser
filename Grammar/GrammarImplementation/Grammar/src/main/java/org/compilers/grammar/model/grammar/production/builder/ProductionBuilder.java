@@ -6,11 +6,18 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public interface ProductionBuilder {
+public interface ProductionBuilder<T extends Production> {
     String SYMBOLS_SEPARATOR = "`";
     String SIDES_SEPARATOR = "->";
 
-    ProductionBuilder symbols(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals);
+    ProductionBuilder<T> symbols(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals);
 
-    Production build();
+    ProductionBuilder<T> productionString(final String productionString);
+
+    ProductionBuilder<T> productionString(final String productionString, final String sideSeparator, final String symbolSeparator);
+
+    ProductionBuilder<T> production(final Production production);
+
+    T build();
+
 }
