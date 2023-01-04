@@ -21,6 +21,12 @@ public interface ContextFreeGrammar extends ContextDependentGrammar {
     @Override
     Set<? extends ContextFreeProduction> haveSymbolInLeftSide(final Symbol symbol);
 
+    Set<String> first(final Symbol symbol);
+
+    Set<String> follow(final NonTerminal nonTerminal);
+
+    Set<? extends ContextFreeProduction> productionsOf(final NonTerminal nonTerminal);
+
     static Set<String> concatenate1(
             final List<? extends Set<String>> symbols
     ) {
