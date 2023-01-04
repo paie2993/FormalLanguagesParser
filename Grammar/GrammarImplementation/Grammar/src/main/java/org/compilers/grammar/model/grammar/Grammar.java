@@ -18,6 +18,8 @@ public interface Grammar {
 
     NonTerminal startSymbol();
 
+    boolean containsSymbol(final Symbol symbol);
+
     boolean containsNonTerminal(final Symbol nonTerminal);
 
     boolean containsTerminal(final Symbol terminal);
