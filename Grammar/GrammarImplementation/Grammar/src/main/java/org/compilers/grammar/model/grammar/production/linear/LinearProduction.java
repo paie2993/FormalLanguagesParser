@@ -1,7 +1,9 @@
 package org.compilers.grammar.model.grammar.production.linear;
 
 import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
+import org.compilers.grammar.model.grammar.production.linear.builder.LinearProductionBuilder;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
 
@@ -22,5 +24,9 @@ public interface LinearProduction extends ContextFreeProduction {
 
     static boolean isLinearProduction(final Production production) {
         return production instanceof LinearProduction;
+    }
+
+    static ProductionBuilder<LinearProduction> builder() {
+        return new LinearProductionBuilder();
     }
 }
