@@ -1,5 +1,6 @@
 package org.compilers.grammar.model.grammar.production.right_linear;
 
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.linear.LinearProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
@@ -25,5 +26,9 @@ public interface RightLinearProduction extends LinearProduction {
         if (noTerminals != length - 1 || !NonTerminal.isNonTerminal(side.get(length - 1))) {
             throw new IllegalArgumentException("Right side of right - linear production must contain only one non-terminal symbol at the end");
         }
+    }
+
+    static boolean isRightLinearProduction(final Production production) {
+        return production instanceof RightLinearProduction;
     }
 }

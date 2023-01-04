@@ -1,5 +1,6 @@
 package org.compilers.grammar.model.grammar.production.context_dependent;
 
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
@@ -17,5 +18,9 @@ public interface ContextDependentProduction extends UnrestrictedProduction {
 
     static void validateRightSide(final List<Symbol> side) {
         UnrestrictedProduction.validateRightSide(side);
+    }
+
+    static boolean isContextDependentProduction(final Production production) {
+        return production instanceof ContextDependentProduction;
     }
 }

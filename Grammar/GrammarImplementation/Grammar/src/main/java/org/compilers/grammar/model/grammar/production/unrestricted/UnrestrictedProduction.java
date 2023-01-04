@@ -18,6 +18,10 @@ public interface UnrestrictedProduction extends Production {
         validateSide(side);
     }
 
+    static boolean isUnrestrictedProduction(final Production production) {
+        return production instanceof UnrestrictedProduction;
+    }
+
     private static void validateSide(final List<Symbol> side) {
         if (Objects.isNull(side)) {
             throw new IllegalArgumentException("Right side of unrestricted production must not be null");

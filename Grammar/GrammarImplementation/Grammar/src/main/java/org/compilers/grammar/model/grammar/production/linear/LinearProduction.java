@@ -1,5 +1,6 @@
 package org.compilers.grammar.model.grammar.production.linear;
 
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
@@ -17,5 +18,9 @@ public interface LinearProduction extends ContextFreeProduction {
         if (noNonterminals >= 2) {
             throw new IllegalArgumentException("Right side of linear production must contain at most one non-terminal symbol");
         }
+    }
+
+    static boolean isLinearProduction(final Production production) {
+        return production instanceof LinearProduction;
     }
 }

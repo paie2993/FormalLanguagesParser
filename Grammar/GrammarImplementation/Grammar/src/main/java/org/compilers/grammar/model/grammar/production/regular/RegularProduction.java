@@ -1,5 +1,6 @@
 package org.compilers.grammar.model.grammar.production.regular;
 
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.right_linear.RightLinearProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
@@ -24,5 +25,9 @@ public interface RegularProduction extends RightLinearProduction {
         if (!Terminal.isTerminal(side.get(0)) || !NonTerminal.isNonTerminal(side.get(1))) {
             throw new IllegalArgumentException("Right side of regular production is not valid");
         }
+    }
+
+    static boolean isRegularProduction(final Production production) {
+        return production instanceof RegularProduction;
     }
 }
