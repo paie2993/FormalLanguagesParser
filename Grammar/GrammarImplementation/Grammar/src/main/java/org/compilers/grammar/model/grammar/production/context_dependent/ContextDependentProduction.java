@@ -1,6 +1,8 @@
 package org.compilers.grammar.model.grammar.production.context_dependent;
 
 import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
+import org.compilers.grammar.model.grammar.production.context_dependent.builer.ContextDependentProductionBuilder;
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.Symbol;
@@ -22,5 +24,9 @@ public interface ContextDependentProduction extends UnrestrictedProduction {
 
     static boolean isContextDependentProduction(final Production production) {
         return production instanceof ContextDependentProduction;
+    }
+
+    static ProductionBuilder<ContextDependentProduction> builder() {
+        return new ContextDependentProductionBuilder();
     }
 }
