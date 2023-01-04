@@ -2,10 +2,13 @@ package org.compilers.grammar.model.grammar.production.context_free;
 
 import org.compilers.grammar.model.grammar.production.context_dependent.ContextDependentProduction;
 import org.compilers.grammar.model.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 
 import java.util.List;
 
 public interface ContextFreeProduction extends ContextDependentProduction {
+
+    NonTerminal leftSideNonTerminal();
 
     static void validateLeftSide(final List<Symbol> side) {
         ContextDependentProduction.validateLeftSide(side);
