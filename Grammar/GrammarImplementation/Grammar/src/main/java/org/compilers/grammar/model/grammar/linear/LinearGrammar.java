@@ -1,5 +1,6 @@
-package org.compilers.grammar.model.grammar;
+package org.compilers.grammar.model.grammar.linear;
 
+import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammar;
 import org.compilers.grammar.model.grammar.production.linear.LinearProduction;
 import org.compilers.grammar.model.vocabulary.Symbol;
 
