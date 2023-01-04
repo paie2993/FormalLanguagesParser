@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class AbstractGrammar<T extends Production> implements Grammar {
-    private final Set<? extends NonTerminal> nonTerminals;
-    private final Set<? extends Terminal> terminals;
-    private final List<? extends T> productions;
-    private final NonTerminal startSymbol;
+    protected final Set<? extends NonTerminal> nonTerminals;
+    protected final Set<? extends Terminal> terminals;
+    protected final List<? extends T> productions;
+    protected final NonTerminal startSymbol;
 
     public AbstractGrammar(
             final Set<? extends NonTerminal> nonTerminals,
@@ -51,6 +51,13 @@ public abstract class AbstractGrammar<T extends Production> implements Grammar {
     @Override
     public NonTerminal startSymbol() {
         return this.startSymbol;
+    }
+
+    @Override
+    public boolean containsSymbol(Symbol symbol) {
+        Objects.requireNonNull(symbol);
+
+        return this.nonTerminals.contains(symbol) || this.terminals.contains(symbol);
     }
 
     @Override
