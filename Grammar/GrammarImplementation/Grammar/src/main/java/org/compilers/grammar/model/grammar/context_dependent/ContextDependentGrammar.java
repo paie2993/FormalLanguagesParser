@@ -2,7 +2,7 @@ package org.compilers.grammar.model.grammar.context_dependent;
 
 import org.compilers.grammar.model.grammar.production.context_dependent.ContextDependentProduction;
 import org.compilers.grammar.model.grammar.unrestricted.UnrestrictedGrammar;
-import org.compilers.grammar.model.grammar.vocabulary.Symbol;
+import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.Set;
 
