@@ -78,7 +78,7 @@ public abstract class AbstractGrammar implements Grammar {
     }
 
     @Override
-    public Set<Production> haveSymbolInLeftSide(final Symbol symbol) {
+    public Set<? extends Production> haveSymbolInLeftSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions
@@ -88,7 +88,7 @@ public abstract class AbstractGrammar implements Grammar {
     }
 
     @Override
-    public Set<Production> haveSymbolInRightSide(final Symbol symbol) {
+    public Set<? extends Production> haveSymbolInRightSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions

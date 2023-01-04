@@ -26,7 +26,7 @@ public interface Grammar {
 
     int indexOf(final Production production);
 
-    Set<Production> haveSymbolInRightSide(final Symbol symbol);
+    Set<? extends Production> haveSymbolInRightSide(final Symbol symbol);
 
-    Set<Production> haveSymbolInLeftSide(final Symbol symbol);
+    Set<? extends Production> haveSymbolInLeftSide(final Symbol symbol);
 }
