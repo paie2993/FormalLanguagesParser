@@ -4,8 +4,8 @@ import org.compilers.grammar.model.grammar.production.builder.AbstractProduction
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
 import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProductionImpl;
 
-public class UnrestrictedProductionBuilderImpl extends AbstractProductionBuilder<UnrestrictedProduction> {
-    public UnrestrictedProductionBuilderImpl() {
+public class UnrestrictedProductionBuilder extends AbstractProductionBuilder<UnrestrictedProduction> {
+    public UnrestrictedProductionBuilder() {
     }
 
     @Override

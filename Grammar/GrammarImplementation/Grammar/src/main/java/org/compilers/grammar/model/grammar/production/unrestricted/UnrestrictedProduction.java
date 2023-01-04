@@ -2,7 +2,7 @@ package org.compilers.grammar.model.grammar.production.unrestricted;
 
 import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
-import org.compilers.grammar.model.grammar.production.unrestricted.builder.UnrestrictedProductionBuilderImpl;
+import org.compilers.grammar.model.grammar.production.unrestricted.builder.UnrestrictedProductionBuilder;
 import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public interface UnrestrictedProduction extends Production {
     }
 
     static ProductionBuilder<UnrestrictedProduction> builder() {
-        return new UnrestrictedProductionBuilderImpl();
+        return new UnrestrictedProductionBuilder();
     }
 
     private static void validateSide(final List<Symbol> side) {
