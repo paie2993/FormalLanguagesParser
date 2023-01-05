@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractGrammar<T extends Production> implements Grammar {
+public abstract class AbstractGrammar<T extends Production> implements Grammar<T> {
     protected final Set<? extends NonTerminal> nonTerminals;
     protected final Set<? extends Terminal> terminals;
     protected final List<? extends T> productions;
@@ -54,41 +54,42 @@ public abstract class AbstractGrammar<T extends Production> implements Grammar {
     }
 
     @Override
-    public boolean containsSymbol(Symbol symbol) {
+    public boolean containsSymbol(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
-        return this.nonTerminals.contains(symbol) || this.terminals.contains(symbol);
+        return this.hasNonTerminal(symbol) || this.hasTerminal(symbol);
     }
 
     @Override
     public boolean containsNonTerminal(final Symbol nonTerminal) {
         Objects.requireNonNull(nonTerminal);
 
-        return NonTerminal.isNonTerminal(nonTerminal) && this.nonTerminals.contains((NonTerminal) nonTerminal);
+        return this.hasNonTerminal(nonTerminal);
     }
 
     @Override
     public boolean containsTerminal(final Symbol terminal) {
         Objects.requireNonNull(terminal);
 
-        return Terminal.isTerminal(terminal) && this.terminals.contains((Terminal) terminal);
+        return this.hasTerminal(terminal);
     }
 
     @Override
-    public boolean containsProduction(final Production production) {
+    public boolean containsProduction(final T production) {
         Objects.requireNonNull(production);
+
         return this.productions.contains(production);
     }
 
     @Override
-    public int indexOf(final Production production) {
+    public int indexOf(final T production) {
         Objects.requireNonNull(production);
 
         return this.productions.indexOf(production);
     }
 
     @Override
-    public Set<? extends T> haveSymbolInLeftSide(final Symbol symbol) {
+    public Set<? extends T> haveSymbolInRightSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions
@@ -98,12 +99,20 @@ public abstract class AbstractGrammar<T extends Production> implements Grammar {
     }
 
     @Override
-    public Set<? extends T> haveSymbolInRightSide(final Symbol symbol) {
+    public Set<? extends T> haveSymbolInLeftSide(final Symbol symbol) {
         Objects.requireNonNull(symbol);
 
         return this.productions
                 .stream()
                 .filter(production -> production.hasSymbolInRightSide(symbol))
                 .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private boolean hasNonTerminal(final Symbol symbol) {
+        return NonTerminal.isNonTerminal(symbol) && this.nonTerminals.contains((NonTerminal) symbol);
+    }
+
+    private boolean hasTerminal(final Symbol symbol) {
+        return Terminal.isTerminal(symbol) && this.terminals.contains((Terminal) symbol);
     }
 }

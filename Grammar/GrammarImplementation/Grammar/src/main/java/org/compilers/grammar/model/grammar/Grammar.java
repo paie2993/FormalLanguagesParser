@@ -7,14 +7,12 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public interface Grammar {
-    String EPSILON = "ε";
-
+public interface Grammar<T extends Production> {
     Set<? extends NonTerminal> nonTerminals();
 
     Set<? extends Terminal> terminals();
 
-    Set<? extends Production> productions();
+    Set<? extends T> productions();
 
     NonTerminal startSymbol();
 
@@ -24,11 +22,11 @@ public interface Grammar {
 
     boolean containsTerminal(final Symbol terminal);
 
-    boolean containsProduction(final Production production);
+    boolean containsProduction(final T production);
 
-    int indexOf(final Production production);
+    int indexOf(final T production);
 
-    Set<? extends Production> haveSymbolInRightSide(final Symbol symbol);
+    Set<? extends T> haveSymbolInRightSide(final Symbol symbol);
 
-    Set<? extends Production> haveSymbolInLeftSide(final Symbol symbol);
+    Set<? extends T> haveSymbolInLeftSide(final Symbol symbol);
 }
