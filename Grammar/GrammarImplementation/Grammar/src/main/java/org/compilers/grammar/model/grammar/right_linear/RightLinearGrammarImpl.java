@@ -7,7 +7,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class RightLinearGrammarImpl extends AbstractContextFreeGrammar<RightLinearProduction> implements RightLinearGrammar {
+public class RightLinearGrammarImpl extends AbstractContextFreeGrammar<RightLinearProduction> implements RightLinearGrammar<RightLinearProduction> {
     public RightLinearGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,

@@ -7,7 +7,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class RegularGrammarImpl extends AbstractContextFreeGrammar<RegularProduction> implements RegularGrammar {
+public class RegularGrammarImpl extends AbstractContextFreeGrammar<RegularProduction> implements RegularGrammar<RegularProduction> {
     public RegularGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,

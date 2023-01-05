@@ -7,7 +7,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class UnrestrictedGrammarImpl extends AbstractGrammar<UnrestrictedProduction> implements UnrestrictedGrammar {
+public class UnrestrictedGrammarImpl extends AbstractGrammar<UnrestrictedProduction> implements UnrestrictedGrammar<UnrestrictedProduction> {
     public UnrestrictedGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,

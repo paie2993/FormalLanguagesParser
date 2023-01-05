@@ -11,21 +11,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public interface ContextFreeGrammar extends ContextDependentGrammar {
-    @Override
-    Set<? extends ContextFreeProduction> productions();
-
-    @Override
-    Set<? extends ContextFreeProduction> haveSymbolInRightSide(final Symbol symbol);
-
-    @Override
-    Set<? extends ContextFreeProduction> haveSymbolInLeftSide(final Symbol symbol);
-
+public interface ContextFreeGrammar<T extends ContextFreeProduction> extends ContextDependentGrammar<T> {
     Set<String> first(final Symbol symbol);
 
     Set<String> follow(final NonTerminal nonTerminal);
 
-    Set<? extends ContextFreeProduction> productionsOf(final NonTerminal nonTerminal);
+    Set<? extends T> productionsOf(final NonTerminal nonTerminal);
 
     static Set<String> concatenate1(
             final List<? extends Set<String>> symbols

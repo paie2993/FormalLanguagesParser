@@ -7,7 +7,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class LinearGrammarImpl extends AbstractContextFreeGrammar<LinearProduction> implements LinearGrammar {
+public class LinearGrammarImpl extends AbstractContextFreeGrammar<LinearProduction> implements LinearGrammar<LinearProduction> {
     public LinearGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,

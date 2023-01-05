@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class AbstractContextFreeGrammar<T extends ContextFreeProduction> extends AbstractGrammar<T> implements ContextFreeGrammar {
+public abstract class AbstractContextFreeGrammar<T extends ContextFreeProduction> extends AbstractGrammar<T> implements ContextFreeGrammar<T> {
     protected final Map<? extends Symbol, ? extends Set<String>> first;
     protected final Map<? extends NonTerminal, ? extends Set<String>> follow;
 
@@ -40,7 +40,7 @@ public abstract class AbstractContextFreeGrammar<T extends ContextFreeProduction
     }
 
     @Override
-    public Set<T> productionsOf(final NonTerminal nonTerminal) {
+    public Set<? extends T> productionsOf(final NonTerminal nonTerminal) {
         Objects.requireNonNull(nonTerminal);
 
         return this.productions

@@ -6,7 +6,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class ContextFreeGrammarImpl extends AbstractContextFreeGrammar<ContextFreeProduction> implements ContextFreeGrammar {
+public class ContextFreeGrammarImpl extends AbstractContextFreeGrammar<ContextFreeProduction> implements ContextFreeGrammar<ContextFreeProduction> {
     public ContextFreeGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,

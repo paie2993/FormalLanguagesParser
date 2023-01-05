@@ -7,7 +7,7 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
 import java.util.Set;
 
-public class ContextDependentGrammarImpl extends AbstractGrammar<ContextDependentProduction> implements ContextDependentGrammar {
+public class ContextDependentGrammarImpl extends AbstractGrammar<ContextDependentProduction> implements ContextDependentGrammar<ContextDependentProduction> {
     public ContextDependentGrammarImpl(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,
