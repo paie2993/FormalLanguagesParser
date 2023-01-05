@@ -33,7 +33,7 @@ public interface RegularProduction extends RightLinearProduction {
         return production instanceof RegularProduction;
     }
 
-    static ProductionBuilder<RegularProduction> builder() {
+    static ProductionBuilder<? extends RegularProduction> builder() {
         return new RegularProductionBuilder();
     }
 }

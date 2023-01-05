@@ -24,7 +24,7 @@ public interface UnrestrictedProduction extends Production {
         return production instanceof UnrestrictedProduction;
     }
 
-    static ProductionBuilder<UnrestrictedProduction> builder() {
+    static ProductionBuilder<? extends UnrestrictedProduction> builder() {
         return new UnrestrictedProductionBuilder();
     }
 

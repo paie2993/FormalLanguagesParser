@@ -34,7 +34,7 @@ public interface RightLinearProduction extends LinearProduction {
         return production instanceof RightLinearProduction;
     }
 
-    static ProductionBuilder<RightLinearProduction> builder() {
+    static ProductionBuilder<? extends RightLinearProduction> builder() {
         return new RightLinearProductionBuilder();
     }
 }

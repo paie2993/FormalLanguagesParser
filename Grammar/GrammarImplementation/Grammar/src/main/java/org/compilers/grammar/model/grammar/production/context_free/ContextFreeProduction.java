@@ -28,7 +28,7 @@ public interface ContextFreeProduction extends ContextDependentProduction {
         return production instanceof ContextFreeProduction;
     }
 
-    static ProductionBuilder<ContextFreeProduction> builder() {
+    static ProductionBuilder<? extends ContextFreeProduction> builder() {
         return new ContextFreeProductionBuilder();
     }
 }

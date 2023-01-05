@@ -26,7 +26,7 @@ public interface LinearProduction extends ContextFreeProduction {
         return production instanceof LinearProduction;
     }
 
-    static ProductionBuilder<LinearProduction> builder() {
+    static ProductionBuilder<? extends LinearProduction> builder() {
         return new LinearProductionBuilder();
     }
 }

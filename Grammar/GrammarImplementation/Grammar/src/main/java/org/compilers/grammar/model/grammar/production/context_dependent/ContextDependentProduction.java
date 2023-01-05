@@ -26,7 +26,7 @@ public interface ContextDependentProduction extends UnrestrictedProduction {
         return production instanceof ContextDependentProduction;
     }
 
-    static ProductionBuilder<ContextDependentProduction> builder() {
+    static ProductionBuilder<? extends ContextDependentProduction> builder() {
         return new ContextDependentProductionBuilder();
     }
 }
