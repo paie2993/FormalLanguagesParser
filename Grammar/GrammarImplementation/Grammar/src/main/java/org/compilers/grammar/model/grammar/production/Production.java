@@ -1,12 +1,12 @@
 package org.compilers.grammar.model.grammar.production;
 
-import org.compilers.grammar.model.grammar.Grammar;
 import org.compilers.grammar.model.vocabulary.Symbol;
 
 import java.util.List;
 import java.util.Objects;
 
 public interface Production {
+    String EPSILON = "ε";
     String SIDES_SEPARATOR = "->";
 
     List<Symbol> leftSide();
@@ -22,7 +22,7 @@ public interface Production {
 
         final StringBuilder builder = new StringBuilder();
         if (side.isEmpty()) {
-            builder.append(Grammar.EPSILON);
+            builder.append(EPSILON);
         } else {
             side.stream().map(Symbol::value).forEach(builder::append);
         }
