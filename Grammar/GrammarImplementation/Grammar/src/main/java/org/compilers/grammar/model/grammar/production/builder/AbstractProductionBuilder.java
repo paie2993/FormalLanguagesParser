@@ -66,43 +66,43 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
         return this;
     }
 
-    protected void setConvention(
+    private void setConvention(
             final Set<NonTerminal> nonTerminals,
             final Set<Terminal> terminals
     ) {
         this.convention = new Convention(nonTerminals, terminals);
     }
 
-    protected void setProductionString(final String productionString) {
+    private void setProductionString(final String productionString) {
         this.eraseProduction();
         this.productionString = productionString;
         this.sideSeparator = SIDES_SEPARATOR;
         this.symbolSeparator = SYMBOLS_SEPARATOR;
     }
 
-    protected void setProductionString(final String productionString, final String sideSeparator, final String symbolSeparator) {
+    private void setProductionString(final String productionString, final String sideSeparator, final String symbolSeparator) {
         this.eraseProduction();
         this.productionString = productionString;
         this.sideSeparator = sideSeparator;
         this.symbolSeparator = symbolSeparator;
     }
 
-    protected void eraseProductionString() {
+    private void eraseProductionString() {
         this.productionString = null;
         this.sideSeparator = null;
         this.symbolSeparator = null;
     }
 
-    protected void setProduction(final Production production) {
+    private void setProduction(final Production production) {
         this.eraseProductionString();
         this.production = production;
     }
 
-    protected void eraseProduction() {
+    private void eraseProduction() {
         this.production = null;
     }
 
-    protected void parseProductionStringAndSaveProduction() {
+    private void parseProductionStringAndSaveProduction() {
         this.production = this.parseProductionString();
     }
 
@@ -117,10 +117,8 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
 
 
     protected void eraseAll() {
-        this.productionString = null;
-        this.sideSeparator = null;
-        this.symbolSeparator = null;
-        this.production = null;
+        this.eraseProductionString();
+        this.eraseProduction();
     }
 
 
