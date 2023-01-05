@@ -19,15 +19,15 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class AbstractGrammarBuilder<T extends Production> implements GrammarBuilder<T> {
+public abstract class AbstractGrammarBuilder<T1 extends Production, T2 extends Grammar<? extends T1>> implements GrammarBuilder<T1, T2> {
     private String fileName = null;
 
     private String separator = null;
 
-    private Grammar<? extends Production> grammar = null;
+    protected Grammar<? extends Production> grammar = null;
 
     @Override
-    public GrammarBuilder<? extends T> file(final String fileName) {
+    public GrammarBuilder<? extends T1, ? extends T2> file(final String fileName) {
         Objects.requireNonNull(fileName);
 
         this.setFile(fileName);
@@ -36,17 +36,17 @@ public abstract class AbstractGrammarBuilder<T extends Production> implements Gr
     }
 
     @Override
-    public GrammarBuilder<? extends T> file(String fileName, String separator) {
+    public GrammarBuilder<? extends T1, ? extends T2> file(String fileName, String separator) {
         Objects.requireNonNull(fileName);
         Objects.requireNonNull(separator);
 
-        this.setFile(fileName);
+        this.setFile(fileName, separator);
 
         return this;
     }
 
     @Override
-    public GrammarBuilder<? extends T> grammar(final Grammar<? extends Production> grammar) {
+    public GrammarBuilder<? extends T1, ? extends T2> grammar(final Grammar<? extends Production> grammar) {
         Objects.requireNonNull(grammar);
 
         this.setGrammar(grammar);
@@ -102,7 +102,7 @@ public abstract class AbstractGrammarBuilder<T extends Production> implements Gr
 
             final Set<? extends NonTerminal> nonTerminals = readNonTerminals(reader);
             final Set<? extends Terminal> terminals = readTerminals(reader);
-            final Set<? extends UnrestrictedProduction> productions = readProductions(reader, UnrestrictedProduction.builder());
+            final Set<? extends UnrestrictedProduction> productions = readProductions(reader, UnrestrictedProduction.builder().symbols(nonTerminals, terminals));
             final NonTerminal startingNonTerminal = readStartingNonTerminal(reader);
 
             return new UnrestrictedGrammarImpl(nonTerminals, terminals, productions, startingNonTerminal);
@@ -134,7 +134,7 @@ public abstract class AbstractGrammarBuilder<T extends Production> implements Gr
     /**
      * Applies the builder to each token from [tokens]
      */
-    private <T1> Set<? extends T1> buildElements(final String[] tokens, final Function<String, T1> builder) {
+    private <T> Set<? extends T> buildElements(final String[] tokens, final Function<String, T> builder) {
         return Arrays.stream(tokens).map(builder).collect(Collectors.toUnmodifiableSet());
     }
 
