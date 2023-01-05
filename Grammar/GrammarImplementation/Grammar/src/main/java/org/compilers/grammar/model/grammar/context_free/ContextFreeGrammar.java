@@ -1,7 +1,9 @@
 package org.compilers.grammar.model.grammar.context_free;
 
 
+import org.compilers.grammar.model.grammar.builder.GrammarBuilder;
 import org.compilers.grammar.model.grammar.context_dependent.ContextDependentGrammar;
+import org.compilers.grammar.model.grammar.context_free.builder.ContextFreeGrammarBuilder;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
 import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
@@ -126,6 +128,10 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
                 .stream()
                 .map(first::get)
                 .toList());
+    }
+
+    static GrammarBuilder<? extends ContextFreeProduction, ? extends ContextFreeGrammar<? extends ContextFreeProduction>> builder() {
+        return new ContextFreeGrammarBuilder();
     }
 
     private static Map<? extends Symbol, ? extends Set<String>> oneIterationOfFirst(
