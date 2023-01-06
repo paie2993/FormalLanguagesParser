@@ -17,16 +17,20 @@ public class UnrestrictedGrammarBuilder extends AbstractGrammarBuilder<Unrestric
     @Override
     public UnrestrictedGrammar<? extends UnrestrictedProduction> build() {
         this.partialBuild();
-        final Set<? extends UnrestrictedProduction> productions = prepareProductions(this.grammar.productions());
+
+        final ProductionBuilder<? extends UnrestrictedProduction> productionBuilder = UnrestrictedProduction.builder().symbols(this.grammar.nonTerminals(), this.grammar.terminals());
+        final Set<? extends UnrestrictedProduction> productions = prepareProductions(this.grammar.productions(), productionBuilder);
         final UnrestrictedGrammar<? extends UnrestrictedProduction> unrestrictedGrammar = new UnrestrictedGrammarImpl(this.grammar.nonTerminals(), this.grammar.terminals(), productions, this.grammar.startSymbol());
+
         this.eraseAll();
+
         return unrestrictedGrammar;
     }
 
-    private static Set<? extends UnrestrictedProduction> prepareProductions(final Set<? extends Production> productions) {
+    private static Set<? extends UnrestrictedProduction> prepareProductions(final Set<? extends Production> productions, final ProductionBuilder<? extends UnrestrictedProduction> builder) {
         return productions
                 .stream()
-                .map(UnrestrictedProduction.builder()::production)
+                .map(builder::production)
                 .map(ProductionBuilder::build)
                 .collect(Collectors.toUnmodifiableSet());
     }
