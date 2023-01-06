@@ -17,7 +17,7 @@ public class UnrestrictedGrammarBuilder extends AbstractGrammarBuilder<Unrestric
 
     @Override
     public UnrestrictedGrammar<? extends UnrestrictedProduction> build() {
-        final BiFunction<Grammar<? extends Production>, Set<? extends UnrestrictedProduction>, ? extends UnrestrictedGrammar<? extends UnrestrictedProduction>> create = (grammar, productions) -> new UnrestrictedGrammarImpl(grammar.nonTerminals(), grammar.terminals(), productions, grammar.startSymbol());
+        final BiFunction<Grammar<? extends Production>, Set<? extends UnrestrictedProduction>, UnrestrictedGrammar<? extends UnrestrictedProduction>> create = (grammar, productions) -> new UnrestrictedGrammarImpl(grammar.nonTerminals(), grammar.terminals(), productions, grammar.startSymbol());
         final ProductionBuilder<? extends UnrestrictedProduction> productionBuilder = UnrestrictedProduction.builder();
         return this.partialBuild(create, productionBuilder);
     }
