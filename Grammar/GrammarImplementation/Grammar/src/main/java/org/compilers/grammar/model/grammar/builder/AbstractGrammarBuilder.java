@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -79,13 +80,21 @@ public abstract class AbstractGrammarBuilder<T1 extends Production, T2 extends G
         this.grammar = null;
     }
 
-    protected void partialBuild() {
+    protected T2 partialBuild(final BiFunction<Grammar<? extends Production>, Set<? extends T1>, T2> create, final ProductionBuilder<? extends T1> builder) {
         if (Objects.isNull(this.grammar)) {
             if (Objects.isNull(this.fileName)) {
                 throw new RuntimeException("The builder was not provided with eiter a file name or a grammar object");
             }
             this.readFromFileAndSaveGrammar();
         }
+
+        final ProductionBuilder<? extends T1> productionBuilder = builder.symbols(this.grammar.nonTerminals(), this.grammar.terminals());
+        final Set<? extends T1> productions = GrammarBuilder.prepareProductions(this.grammar.productions(), productionBuilder);
+        final T2 grammar = create.apply(this.grammar, productions);
+
+        this.eraseAll();
+
+        return grammar;
     }
 
     private void readFromFileAndSaveGrammar() {
