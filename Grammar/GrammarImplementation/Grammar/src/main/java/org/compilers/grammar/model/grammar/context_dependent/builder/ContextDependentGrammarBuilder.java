@@ -17,16 +17,20 @@ public class ContextDependentGrammarBuilder extends AbstractGrammarBuilder<Conte
     @Override
     public ContextDependentGrammar<? extends ContextDependentProduction> build() {
         this.partialBuild();
-        final Set<? extends ContextDependentProduction> productions = prepareProductions(this.grammar.productions());
+
+        final ProductionBuilder<? extends ContextDependentProduction> productionBuilder = ContextDependentProduction.builder().symbols(this.grammar.nonTerminals(), this.grammar.terminals());
+        final Set<? extends ContextDependentProduction> productions = prepareProductions(this.grammar.productions(), productionBuilder);
         final ContextDependentGrammar<? extends ContextDependentProduction> contextDependentGrammar = new ContextDependentGrammarImpl(this.grammar.nonTerminals(), this.grammar.terminals(), productions, this.grammar.startSymbol());
+
         this.eraseAll();
+
         return contextDependentGrammar;
     }
 
-    private static Set<? extends ContextDependentProduction> prepareProductions(final Set<? extends Production> productions) {
+    private static Set<? extends ContextDependentProduction> prepareProductions(final Set<? extends Production> productions, final ProductionBuilder<? extends ContextDependentProduction> builder) {
         return productions
                 .stream()
-                .map(ContextDependentProduction.builder()::production)
+                .map(builder::production)
                 .map(ProductionBuilder::build)
                 .collect(Collectors.toUnmodifiableSet());
     }
