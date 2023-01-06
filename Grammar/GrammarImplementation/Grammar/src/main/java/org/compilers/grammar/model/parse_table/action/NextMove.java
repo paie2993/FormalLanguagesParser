@@ -1,4 +1,4 @@
-package org.compilers.grammar.model.parsing_table.action;
+package org.compilers.grammar.model.parse_table.action;
 
 import org.compilers.grammar.model.vocabulary.Symbol;
 
