@@ -2,10 +2,12 @@ package org.compilers.grammar.ui;
 
 
 import org.compilers.grammar.model.grammar.Grammar;
-import org.compilers.grammar.model.grammar.GrammarReader;
-import org.compilers.grammar.model.vocabulary.NonTerminal;
+import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammar;
+import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
+import org.compilers.grammar.model.grammar.unrestricted.UnrestrictedGrammar;
+import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminalImpl;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,12 +15,12 @@ import java.util.StringJoiner;
 
 public final class CommandLineInterface {
 
-    private static final String grammarFile = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/g1.txt";
+    private static final String grammarFile = "src/main/java/org/compilers/grammar/g1.txt";
 
-    private final Grammar grammar;
+    private final Grammar<? extends Production> grammar;
 
-    public CommandLineInterface() throws IOException {
-        this.grammar = GrammarReader.readGrammar(grammarFile);
+    public CommandLineInterface() {
+        this.grammar = UnrestrictedGrammar.builder().file(grammarFile).build();
     }
 
     private static void printMenu() {
@@ -97,8 +99,8 @@ public final class CommandLineInterface {
         printProductionsOfNonTerminal(nonTerminal);
     }
 
-    private Optional<NonTerminal> validateNonTerminal(final String nonTerminalString) {
-        final var nonTerminal = new NonTerminal(nonTerminalString);
+    private Optional<NonTerminalImpl> validateNonTerminal(final String nonTerminalString) {
+        final var nonTerminal = new NonTerminalImpl(nonTerminalString);
 
         if (!grammar.containsNonTerminal(nonTerminal)) {
             System.out.println("The given non-terminal " + nonTerminal + " is not in the grammar");
@@ -109,18 +111,24 @@ public final class CommandLineInterface {
     }
 
 
-    private void printProductionsOfNonTerminal(final NonTerminal nonTerminal) {
-        final var productions = grammar.productionsOf(nonTerminal);
-        productions.forEach(System.out::println);
+    private void printProductionsOfNonTerminal(final NonTerminalImpl nonTerminal) {
+        try {
+            final ContextFreeGrammar<? extends ContextFreeProduction> cfg = ContextFreeGrammar.builder().grammar(this.grammar).build();
+            final var productions = cfg.productionsOf(nonTerminal);
+            productions.forEach(System.out::println);
+        } catch (RuntimeException exception) {
+            System.out.println("The given grammar is not context free");
+        }
     }
 
     // is context free grammar option
     private void printIsContextFree() {
-        final var isCfg = grammar.isContextFree();
-        if (!isCfg) {
+        try {
+            ContextFreeGrammar.builder().grammar(this.grammar).build();
+            System.out.println("The grammar is context free");
+        } catch (RuntimeException exception) {
             System.out.println("The grammar is not context free");
         }
-        System.out.println("The grammar is context free");
     }
 
     // set printing option
@@ -130,19 +138,3 @@ public final class CommandLineInterface {
         return joiner.toString();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
