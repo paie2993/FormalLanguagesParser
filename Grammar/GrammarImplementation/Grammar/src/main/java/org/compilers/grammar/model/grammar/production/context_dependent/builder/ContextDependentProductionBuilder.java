@@ -1,4 +1,4 @@
-package org.compilers.grammar.model.grammar.production.context_dependent.builer;
+package org.compilers.grammar.model.grammar.production.context_dependent.builder;
 
 import org.compilers.grammar.model.grammar.production.builder.AbstractProductionBuilder;
 import org.compilers.grammar.model.grammar.production.context_dependent.ContextDependentProduction;
