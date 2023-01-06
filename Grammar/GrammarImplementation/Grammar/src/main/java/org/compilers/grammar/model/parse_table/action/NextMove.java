@@ -14,6 +14,14 @@ public final class NextMove {
         this.productionNumber = productionNumber;
     }
 
+    public List<Symbol> rightSide() {
+        return rightSide;
+    }
+
+    public int productionNumber() {
+        return productionNumber;
+    }
+
     @Override
     public String toString() {
         return String.format("(%s, %d)", rightSide.stream().map(Symbol::value).collect(Collectors.joining()), productionNumber);
