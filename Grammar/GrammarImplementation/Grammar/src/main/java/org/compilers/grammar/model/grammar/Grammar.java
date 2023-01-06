@@ -26,7 +26,11 @@ public interface Grammar<T extends Production> {
 
     int indexOf(final T production);
 
+    // set of productions in which the given symbol appears in the right-side
+    // if the symbol does not appear in any right side, returns empty side
     Set<? extends T> haveSymbolInRightSide(final Symbol symbol);
 
+    // set of productions in which the given symbol appears in the left-side
+    // if the symbol does not appear in any left side, returns empty side
     Set<? extends T> haveSymbolInLeftSide(final Symbol symbol);
 }
