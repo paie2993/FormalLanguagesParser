@@ -27,8 +27,8 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
 
     @Override
     public AbstractProductionBuilder<T> symbols(
-            final Set<NonTerminal> nonTerminals,
-            final Set<Terminal> terminals) {
+            final Set<? extends NonTerminal> nonTerminals,
+            final Set<? extends Terminal> terminals) {
         Objects.requireNonNull(nonTerminals);
         Objects.requireNonNull(terminals);
 
@@ -67,8 +67,8 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
     }
 
     private void setConvention(
-            final Set<NonTerminal> nonTerminals,
-            final Set<Terminal> terminals
+            final Set<? extends NonTerminal> nonTerminals,
+            final Set<? extends Terminal> terminals
     ) {
         this.convention = new Convention(nonTerminals, terminals);
     }
@@ -126,7 +126,12 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
         final String[] sides = this.productionString.split(this.sideSeparator);
 
         final List<Symbol> left = buildLeftSide(sides[0]);
-        final List<Symbol> right = buildRightSide(sides[1]);
+        List<Symbol> right;
+        if (sides.length == 1) {
+            right = List.of();
+        } else {
+            right = buildRightSide(sides[1]);
+        }
 
         return new UnrestrictedProductionImpl(left, right);
     }
@@ -177,7 +182,7 @@ public abstract class AbstractProductionBuilder<T extends Production> implements
         private final Set<String> nonTerminalsValues;
         private final Set<String> terminalsValues;
 
-        public Convention(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals) {
+        public Convention(final Set<? extends NonTerminal> nonTerminals, final Set<? extends Terminal> terminals) {
             this.nonTerminalsValues = stringSet(nonTerminals);
             this.terminalsValues = stringSet(terminals);
         }

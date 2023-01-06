@@ -10,7 +10,7 @@ public interface ProductionBuilder<T extends Production> {
     String SYMBOLS_SEPARATOR = "`";
     String SIDES_SEPARATOR = "->";
 
-    ProductionBuilder<T> symbols(final Set<NonTerminal> nonTerminals, final Set<Terminal> terminals);
+    ProductionBuilder<T> symbols(final Set<? extends NonTerminal> nonTerminals, final Set<? extends Terminal> terminals);
 
     ProductionBuilder<T> productionString(final String productionString);
 
