@@ -20,6 +20,9 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
 
     Set<? extends T> productionsOf(final NonTerminal nonTerminal);
 
+    // a recursive method which keeps concatenating the sets of symbols from the tail of the input list until the start <br>
+    // in other words, it first concatenates the last two sets, then concatenates the 3rd set from the list with the <br>
+    // concatenation of the last two sets, then ... and so on
     static Set<String> concatenate1(
             final List<? extends Set<String>> symbols
     ) {
@@ -38,6 +41,10 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
         return concatenate1(firstSet, otherSetsConcatenation);
     }
 
+    /**
+     * Concatenation of length 1 for a pair of sets
+     * Is public for testing purposes
+     */
     static Set<String> concatenate1(
             final Set<String> leftSet,
             final Set<String> rightSet
@@ -314,6 +321,9 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
                         terminal -> new HashSet<>()));
     }
 
+    // return true if there isn't any symbol whose result set is empty
+    // in other words, returns true if all the symbols have something in their result set
+    // in other words, returns false if there is at least a symbol whose result set is empty
     private static boolean areNonEmptyResultSets(
             final Map<? extends Symbol, ? extends Set<String>> previousIterationResultSets,
             final ContextFreeProduction production
@@ -324,6 +334,7 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
                 .noneMatch(symbol -> resultSetOfSymbolIsEmpty(previousIterationResultSets, symbol));
     }
 
+    // true if result set of given symbol is empty
     private static boolean resultSetOfSymbolIsEmpty(
             final Map<? extends Symbol, ? extends Set<String>> iterationResultSets,
             final Symbol symbol
