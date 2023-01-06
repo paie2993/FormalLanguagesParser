@@ -1,6 +1,8 @@
 package org.compilers.grammar.model.grammar.regular;
 
+import org.compilers.grammar.model.grammar.builder.GrammarBuilder;
 import org.compilers.grammar.model.grammar.production.regular.RegularProduction;
+import org.compilers.grammar.model.grammar.regular.builder.RegularGrammarBuilder;
 import org.compilers.grammar.model.grammar.right_linear.RightLinearGrammar;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 
@@ -23,5 +25,9 @@ public interface RegularGrammar<T extends RegularProduction> extends RightLinear
                 throw new IllegalArgumentException("The given grammar is not regular");
             }
         }
+    }
+
+    static GrammarBuilder<? extends RegularProduction, ? extends RegularGrammar<? extends RegularProduction>> builder() {
+        return new RegularGrammarBuilder();
     }
 }
