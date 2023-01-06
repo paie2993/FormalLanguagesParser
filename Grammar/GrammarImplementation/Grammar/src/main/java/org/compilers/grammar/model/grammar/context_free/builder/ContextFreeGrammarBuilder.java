@@ -1,13 +1,15 @@
 package org.compilers.grammar.model.grammar.context_free.builder;
 
+import org.compilers.grammar.model.grammar.Grammar;
 import org.compilers.grammar.model.grammar.builder.AbstractGrammarBuilder;
-import org.compilers.grammar.model.grammar.builder.GrammarBuilder;
 import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammar;
 import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammarImpl;
+import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.builder.ProductionBuilder;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
 
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public class ContextFreeGrammarBuilder extends AbstractGrammarBuilder<ContextFreeProduction, ContextFreeGrammar<? extends ContextFreeProduction>> {
     public ContextFreeGrammarBuilder() {
@@ -15,14 +17,8 @@ public class ContextFreeGrammarBuilder extends AbstractGrammarBuilder<ContextFre
 
     @Override
     public ContextFreeGrammar<? extends ContextFreeProduction> build() {
-        this.partialBuild();
-
-        final ProductionBuilder<? extends ContextFreeProduction> productionBuilder = ContextFreeProduction.builder().symbols(this.grammar.nonTerminals(), this.grammar.terminals());
-        final Set<? extends ContextFreeProduction> productions = GrammarBuilder.prepareProductions(this.grammar.productions(), productionBuilder);
-        final ContextFreeGrammar<? extends ContextFreeProduction> contextFreeGrammar = new ContextFreeGrammarImpl(this.grammar.nonTerminals(), this.grammar.terminals(), productions, this.grammar.startSymbol());
-
-        this.eraseAll();
-
-        return contextFreeGrammar;
+        final BiFunction<Grammar<? extends Production>, Set<? extends ContextFreeProduction>, ContextFreeGrammar<? extends ContextFreeProduction>> create = (grammar, productions) -> new ContextFreeGrammarImpl(grammar.nonTerminals(), grammar.terminals(), productions, grammar.startSymbol());
+        final ProductionBuilder<? extends ContextFreeProduction> productionBuilder = ContextFreeProduction.builder();
+        return this.partialBuild(create, productionBuilder);
     }
 }
