@@ -17,10 +17,13 @@ public class ContextFreeGrammarBuilder extends AbstractGrammarBuilder<ContextFre
     @Override
     public ContextFreeGrammar<? extends ContextFreeProduction> build() {
         this.partialBuild();
-        ProductionBuilder<? extends ContextFreeProduction> productionBuilder = ContextFreeProduction.builder().symbols(this.grammar.nonTerminals(), this.grammar.terminals());
+
+        final ProductionBuilder<? extends ContextFreeProduction> productionBuilder = ContextFreeProduction.builder().symbols(this.grammar.nonTerminals(), this.grammar.terminals());
         final Set<? extends ContextFreeProduction> productions = prepareProductions(this.grammar.productions(), productionBuilder);
         final ContextFreeGrammar<? extends ContextFreeProduction> contextFreeGrammar = new ContextFreeGrammarImpl(this.grammar.nonTerminals(), this.grammar.terminals(), productions, this.grammar.startSymbol());
+
         this.eraseAll();
+
         return contextFreeGrammar;
     }
 
