@@ -10,11 +10,12 @@ public final class Production {
 
     public static final String SIDES_SEPARATOR = " -> ";
 
-    private final List<Symbol> leftSide;
-    private final List<Symbol> rightSide;
+    private final List<? extends Symbol> leftSide;
+    private final List<? extends Symbol> rightSide;
 
-
-    public Production(final List<Symbol> leftSide, final List<Symbol> rightSide) {
+    // constructors
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public Production(final List<? extends Symbol> leftSide, final List<? extends Symbol> rightSide) {
         Objects.requireNonNull(leftSide);
         Objects.requireNonNull(rightSide);
 
@@ -25,39 +26,82 @@ public final class Production {
         this.rightSide = rightSide;
     }
 
+    public Production(final NonTerminal leftSide, final Symbol rightSide) {
+        Objects.requireNonNull(leftSide);
+        Objects.requireNonNull(rightSide);
 
-    public List<Symbol> leftSide() {
+        final var leftSideList = List.of(leftSide);
+        final var rightSideList = List.of(rightSide);
+
+        Production.validateLeftSide(leftSideList);
+        Production.validateSide(rightSideList);
+
+        this.leftSide = leftSideList;
+        this.rightSide = rightSideList;
+    }
+
+
+    // getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public List<? extends Symbol> leftSide() {
         return leftSide;
     }
 
-    public List<Symbol> rightSide() {
+    public List<? extends Symbol> rightSide() {
         return rightSide;
     }
 
+    // general util
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public String toString() {
         return prepareSideForPrinting(leftSide) + SIDES_SEPARATOR + prepareSideForPrinting(rightSide);
     }
 
-    private static String prepareSideForPrinting(final List<Symbol> list) {
+    private static String prepareSideForPrinting(final List<? extends Symbol> list) {
         final var builder = new StringBuilder();
         list.forEach(builder::append);
         return builder.toString();
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Production other)) { // used 'instanceof' because we can cast automatically while checking the class
+            return false;
+        }
+        return other.leftSide.equals(this.leftSide) && other.rightSide.equals(this.rightSide);
+    }
+
+    @Override
+    public int hashCode() {
+        var hash = 7;
+        hash = 31 * hash + leftSide.hashCode();
+        hash = 31 * hash + rightSide.hashCode();
+        return hash;
+    }
+
+    // validators (checking if productions have a correct structure)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private static void validateLeftSide(final List<Symbol> leftSide) {
+
+    // the left side must not be empty and must contain at least one non-terminal
+    private static void validateLeftSide(final List<? extends Symbol> leftSide) {
         validateSide(leftSide);
         containsNonTerminal(leftSide);
     }
 
-    private static void validateSide(final List<Symbol> side) {
+    // checks if the given side is not empty
+    private static void validateSide(final List<? extends Symbol> side) {
         if (side.isEmpty()) {
             throw new IllegalArgumentException("Side of production can't be empty");
         }
     }
 
-    private static void containsNonTerminal(final List<Symbol> side) {
+    // checks if the given side has at least a non-terminal
+    // it's useful for validating the left side of a production, because a left side must contain at least one non-terminal
+    private static void containsNonTerminal(final List<? extends Symbol> side) {
         final var hasNoNonTerminal = side.stream().map(Object::getClass).noneMatch(NonTerminal.class::equals);
         if (hasNoNonTerminal) {
             throw new IllegalArgumentException("Left side of production must contain at least one non-terminal symbol");

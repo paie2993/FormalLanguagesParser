@@ -36,6 +36,8 @@ public final class Grammar {
         this.startingNonTerminal = startingNonTerminal;
     }
 
+    // getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Set<NonTerminal> nonTerminals() {
         return nonTerminals;
     }
@@ -53,8 +55,11 @@ public final class Grammar {
     }
 
 
+    // advanced getters (by filtering)
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // obtains all the productions (cfg productions) having the left side equal to the given non-terminal
+    // returns an unmodifiable set
     public Set<Production> productionsOf(final Symbol nonTerminal) {
         return productions.stream()
                 .filter(production -> equalsNonTerminal(production.leftSide(), nonTerminal))
@@ -72,7 +77,7 @@ public final class Grammar {
     }
 
     // checks if a side is equals to a symbol (true if side has single symbol)
-    private static boolean equalsNonTerminal(final List<Symbol> side, final Symbol nonTerminal) {
+    private static boolean equalsNonTerminal(final List<? extends Symbol> side, final Symbol nonTerminal) {
         if (!(side.size() == 1)) {
             return false;
         }
@@ -117,7 +122,7 @@ public final class Grammar {
      * Checks if the production can belong to a context free grammar (has only one terminal on the left side)
      */
     private static boolean isContextFreeProduction(final Production production) {
-        final List<Symbol> leftSide = production.leftSide();
+        final var leftSide = production.leftSide();
 
         if (leftSide.size() > 1) {
             return false;
@@ -281,7 +286,7 @@ public final class Grammar {
 
             for (final NonTerminal nonTerminal : nonTerminals) {
                 for (final Production production : inRightSide(nonTerminal)) {
-                    List<Symbol> rightSide = production.rightSide();
+                    final var rightSide = production.rightSide();
 
                     // if the current non-terminal appears as the last symbol on the right side of the current production <br>
                     // then add the 'follow' of the non-terminal from the left side of the production ot the 'follow' of <br>
@@ -410,7 +415,7 @@ public final class Grammar {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // distinguish between terminals and non-terminals
+    // check if given symbol is terminal
     private static boolean isTerminal(final Symbol symbol) {
         return Terminal.class.equals(symbol.getClass());
     }
