@@ -21,10 +21,10 @@ public interface RegularProduction extends RightLinearProduction {
         if (length >= 3) {
             throw new IllegalArgumentException("Right side of regular production must not contain more than 2 symbols");
         }
-        if (length == 0 || length == 1 && Terminal.isTerminal(side.get(0))) {
+        if (length == 0 || length == 1 && Terminal.isInstance(side.get(0))) {
             return;
         }
-        if (!Terminal.isTerminal(side.get(0)) || !NonTerminal.isNonTerminal(side.get(1))) {
+        if (!Terminal.isInstance(side.get(0)) || !NonTerminal.isInstance(side.get(1))) {
             throw new IllegalArgumentException("Right side of regular production is not valid");
         }
     }

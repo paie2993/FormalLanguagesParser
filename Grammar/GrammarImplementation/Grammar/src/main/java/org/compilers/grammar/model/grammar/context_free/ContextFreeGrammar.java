@@ -286,7 +286,7 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
                 }
                 final Symbol firstSymbolOfProduction = production.rightSide().get(0); // first symbol of the production
 
-                if (Terminal.isTerminal(firstSymbolOfProduction)) {
+                if (Terminal.isInstance(firstSymbolOfProduction)) {
                     final Set<String> resultSetOfNonTerminal = resultSet.get(nonTerminal);
                     resultSetOfNonTerminal.add(firstSymbolOfProduction.value());
                 }

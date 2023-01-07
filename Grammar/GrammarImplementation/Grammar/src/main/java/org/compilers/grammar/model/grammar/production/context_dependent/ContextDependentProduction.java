@@ -12,7 +12,7 @@ import java.util.List;
 public interface ContextDependentProduction extends UnrestrictedProduction {
     static void validateLeftSide(final List<? extends Symbol> side) {
         UnrestrictedProduction.validateLeftSide(side);
-        final boolean hasNoNonTerminal = side.stream().noneMatch(NonTerminal::isNonTerminal);
+        final boolean hasNoNonTerminal = side.stream().noneMatch(NonTerminal::isInstance);
         if (hasNoNonTerminal) {
             throw new IllegalArgumentException("Left side of context dependent production must contain at least one non-terminal symbol");
         }

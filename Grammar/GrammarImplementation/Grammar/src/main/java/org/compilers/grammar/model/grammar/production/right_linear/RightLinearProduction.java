@@ -21,11 +21,11 @@ public interface RightLinearProduction extends LinearProduction {
         if (length == 0) {
             return;
         }
-        final long noTerminals = side.stream().filter(Terminal::isTerminal).count();
+        final long noTerminals = side.stream().filter(Terminal::isInstance).count();
         if (noTerminals == length) {
             return;
         }
-        if (noTerminals != length - 1 || !NonTerminal.isNonTerminal(side.get(length - 1))) {
+        if (noTerminals != length - 1 || !NonTerminal.isInstance(side.get(length - 1))) {
             throw new IllegalArgumentException("Right side of right - linear production must contain only one non-terminal symbol at the end");
         }
     }

@@ -41,7 +41,7 @@ public class LL1ParserImpl implements LL1Parser {
         while (true) {
             final Symbol workStackPeek = configuration.workStackPeek();
             final Terminal inputStackPeek = configuration.inputStackPeek();
-            if (NonTerminal.isNonTerminal(workStackPeek)) {
+            if (NonTerminal.isInstance(workStackPeek)) {
                 final NextMove nextMove = this.parseTable.get((NonTerminal) workStackPeek, inputStackPeek);
                 if (Objects.isNull(nextMove)) {
                     return false;

@@ -16,7 +16,7 @@ public interface LinearProduction extends ContextFreeProduction {
 
     static void validateRightSide(final List<? extends Symbol> side) {
         ContextFreeProduction.validateRightSide(side);
-        final long noNonterminals = side.stream().filter(NonTerminal::isNonTerminal).count();
+        final long noNonterminals = side.stream().filter(NonTerminal::isInstance).count();
         if (noNonterminals >= 2) {
             throw new IllegalArgumentException("Right side of linear production must contain at most one non-terminal symbol");
         }

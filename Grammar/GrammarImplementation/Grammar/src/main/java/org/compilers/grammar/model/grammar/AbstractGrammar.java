@@ -114,10 +114,10 @@ public abstract class AbstractGrammar<T extends Production> implements Grammar<T
     }
 
     private boolean hasNonTerminal(final Symbol symbol) {
-        return NonTerminal.isNonTerminal(symbol) && this.nonTerminals.contains((NonTerminal) symbol);
+        return NonTerminal.isInstance(symbol) && this.nonTerminals.contains((NonTerminal) symbol);
     }
 
     private boolean hasTerminal(final Symbol symbol) {
-        return Terminal.isTerminal(symbol) && this.terminals.contains((Terminal) symbol);
+        return Terminal.isInstance(symbol) && this.terminals.contains((Terminal) symbol);
     }
 }
