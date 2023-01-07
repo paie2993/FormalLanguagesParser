@@ -1,0 +1,35 @@
+As production string
+S -> BA
+B -> DC
+D -> a
+C -> *DC
+D -> (S)
+S -> BA
+B -> DC
+D -> a
+C -> ε
+A -> +BA
+B -> DC
+D -> a
+C -> ε
+A -> ε
+C -> ε
+A -> ε
+As derivation string
+[S]
+[B, A]
+[D, C, A]
+[a, C, A]
+[a, *, D, C, A]
+[a, *, (, S, ), C, A]
+[a, *, (, B, A, ), C, A]
+[a, *, (, D, C, A, ), C, A]
+[a, *, (, a, C, A, ), C, A]
+[a, *, (, a, A, ), C, A]
+[a, *, (, a, +, B, A, ), C, A]
+[a, *, (, a, +, D, C, A, ), C, A]
+[a, *, (, a, +, a, C, A, ), C, A]
+[a, *, (, a, +, a, A, ), C, A]
+[a, *, (, a, +, a, ), C, A]
+[a, *, (, a, +, a, ), A]
+[a, *, (, a, +, a, )]

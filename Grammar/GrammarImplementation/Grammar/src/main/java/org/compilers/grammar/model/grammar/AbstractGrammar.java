@@ -1,123 +1,93 @@
 package org.compilers.grammar.model.grammar;
 
-import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.production.Production;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
-import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
-
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public abstract class AbstractGrammar<T extends Production> implements Grammar<T> {
+
     protected final Set<? extends NonTerminal> nonTerminals;
+
     protected final Set<? extends Terminal> terminals;
+
     protected final List<T> productions;
-    protected final NonTerminal startSymbol;
+
+    protected final NonTerminal startNonTerminal;
+
 
     public AbstractGrammar(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,
-            final Set<? extends T> productions,
-            final NonTerminal startSymbol) {
+            final List<T> productions,
+            final NonTerminal startNonTerminal
+    ) {
         Objects.requireNonNull(nonTerminals);
         Objects.requireNonNull(terminals);
         Objects.requireNonNull(productions);
-        Objects.requireNonNull(startSymbol);
+        Objects.requireNonNull(startNonTerminal);
+
+        uniqueProductions(productions);
 
         this.nonTerminals = nonTerminals;
         this.terminals = terminals;
-        this.productions = List.copyOf(productions);
-        this.startSymbol = startSymbol;
+        this.productions = productions;
+        this.startNonTerminal = startNonTerminal;
     }
 
+    // getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public Set<? extends NonTerminal> nonTerminals() {
-        return this.nonTerminals;
+        return nonTerminals;
     }
 
     @Override
     public Set<? extends Terminal> terminals() {
-        return this.terminals;
+        return terminals;
     }
 
     @Override
-    public Set<? extends T> productions() {
-        return Set.copyOf(this.productions);
+    public List<T> productions() {
+        return productions;
     }
 
     @Override
-    public NonTerminal startSymbol() {
-        return this.startSymbol;
+    public NonTerminal startNonTerminal() {
+        return startNonTerminal;
     }
 
+    // complex getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public boolean containsSymbol(final Symbol symbol) {
-        Objects.requireNonNull(symbol);
-
-        return this.hasNonTerminal(symbol) || this.hasTerminal(symbol);
-    }
-
-    @Override
-    public boolean containsNonTerminal(final Symbol nonTerminal) {
+    public boolean containsNonTerminal(final NonTerminal nonTerminal) {
         Objects.requireNonNull(nonTerminal);
-
-        return this.hasNonTerminal(nonTerminal);
+        return nonTerminals.contains(nonTerminal);
     }
 
     @Override
-    public boolean containsTerminal(final Symbol terminal) {
-        Objects.requireNonNull(terminal);
-
-        return this.hasTerminal(terminal);
-    }
-
-    @Override
-    public boolean containsProduction(final Production production) {
+    public int indexOf(final T production) {
         Objects.requireNonNull(production);
-
-        return this.productions.contains(production);
+        return productions.indexOf(production);
     }
 
     @Override
-    public int indexOf(final Production production) {
-        Objects.requireNonNull(production);
-
-        return this.productions.indexOf(production);
+    public T at(final int index) {
+        return productions.get(index);
     }
 
-    @Override
-    public T productionAt(int index) {
-        return this.productions.get(index);
-    }
-
-    @Override
-    public Set<? extends T> haveSymbolInRightSide(final Symbol symbol) {
-        Objects.requireNonNull(symbol);
-
-        return this.productions
-                .stream()
-                .filter(production -> production.hasSymbolInLeftSide(symbol))
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    @Override
-    public Set<? extends T> haveSymbolInLeftSide(final Symbol symbol) {
-        Objects.requireNonNull(symbol);
-
-        return this.productions
-                .stream()
-                .filter(production -> production.hasSymbolInRightSide(symbol))
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    private boolean hasNonTerminal(final Symbol symbol) {
-        return NonTerminal.isInstance(symbol) && this.nonTerminals.contains((NonTerminal) symbol);
-    }
-
-    private boolean hasTerminal(final Symbol symbol) {
-        return Terminal.isInstance(symbol) && this.terminals.contains((Terminal) symbol);
+    // validator
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // check for uniqueness of productions
+    // public to allow testing
+    public static <T extends Production> void uniqueProductions(final Collection<? extends T> productions) {
+        final var set = Set.copyOf(productions);
+        if (set.size() != productions.size()) {
+            throw new IllegalArgumentException("Productions must be unique in a grammar");
+        }
     }
 }

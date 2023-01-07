@@ -1,5 +1,6 @@
 package org.compilers.grammar.model.grammar.context_dependent;
 
+import org.compilers.grammar.model.grammar.unrestricted.AbstractUnrestrictedGrammar;
 import org.compilers.grammar.model.production.context_dependent.AbstractContextDependentProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
@@ -7,14 +8,16 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 import java.util.List;
 import java.util.Set;
 
-public final class ContextDependentGrammar extends AbstractContextDependentGrammar<AbstractContextDependentProduction> {
+public abstract class AbstractContextDependentGrammar
+        <T extends AbstractContextDependentProduction>
+        extends AbstractUnrestrictedGrammar<T> {
 
-    public ContextDependentGrammar(
+    public AbstractContextDependentGrammar(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,
-            final List<AbstractContextDependentProduction> productions,
-            final NonTerminal startSymbol
+            final List<T> productions,
+            final NonTerminal startNonTerminal
     ) {
-        super(nonTerminals, terminals, productions, startSymbol);
+        super(nonTerminals, terminals, productions, startNonTerminal);
     }
 }

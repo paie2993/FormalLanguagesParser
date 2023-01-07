@@ -5,5 +5,6 @@ import org.compilers.grammar.parser.output.ParserOutput;
 import java.util.List;
 
 public interface LL1Parser {
-    ParserOutput parse(final List<? extends String> wordAsList);
+
+    ParserOutput parse(final List<String> word);
 }

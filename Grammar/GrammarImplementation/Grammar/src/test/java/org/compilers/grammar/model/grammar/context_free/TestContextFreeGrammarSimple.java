@@ -1,7 +1,7 @@
 package org.compilers.grammar.model.grammar.context_free;
 
-import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
-import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProductionImpl;
+import org.compilers.grammar.model.production.context_free.AbstractContextFreeProduction;
+import org.compilers.grammar.model.production.context_free.ContextFreeProduction;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminalImpl;
 import org.compilers.grammar.model.vocabulary.terminal.TerminalImpl;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class TestContextFreeGrammarSimple {
 
-    private ContextFreeGrammar<? extends ContextFreeProduction> getContextFreeGrammarOne() {
+    private ContextFreeGrammar getContextFreeGrammarOne() {
         // non-terminals
         final var S = new NonTerminalImpl("S");
         final var A = new NonTerminalImpl("A");
@@ -28,17 +28,17 @@ public class TestContextFreeGrammarSimple {
         final var terminals = Set.of(a, b, c);
 
         // productions
-        final var prodOne = new ContextFreeProductionImpl(S, List.of(A));
-        final var prodTwo = new ContextFreeProductionImpl(A, List.of(B));
-        final var prodThree = new ContextFreeProductionImpl(A, List.of(C));
-        final var prodFour = new ContextFreeProductionImpl(C, List.of(a));
-        final var prodFive = new ContextFreeProductionImpl(C, List.of(D));
-        final var prodSix = new ContextFreeProductionImpl(D, List.of(b));
-        final var prodSeven = new ContextFreeProductionImpl(C, List.of(c));
-        final var productions = Set.of(prodOne, prodTwo, prodThree, prodFour, prodFive, prodSix, prodSeven);
+        final var prodOne = new ContextFreeProduction(S, List.of(A));
+        final var prodTwo = new ContextFreeProduction(A, List.of(B));
+        final var prodThree = new ContextFreeProduction(A, List.of(C));
+        final var prodFour = new ContextFreeProduction(C, List.of(a));
+        final var prodFive = new ContextFreeProduction(C, List.of(D));
+        final var prodSix = new ContextFreeProduction(D, List.of(b));
+        final var prodSeven = new ContextFreeProduction(C, List.of(c));
+        final List<AbstractContextFreeProduction> productions = List.of(prodOne, prodTwo, prodThree, prodFour, prodFive, prodSix, prodSeven);
 
         // grammar
-        return new ContextFreeGrammarImpl(nonTerminals, terminals, productions, S);
+        return new ContextFreeGrammar(nonTerminals, terminals, productions, S);
     }
 
     // test for 'productionsOf(NonTerminal)', when there are productions of the given non-terminal in the grammar
@@ -51,9 +51,9 @@ public class TestContextFreeGrammarSimple {
         final var D = new NonTerminalImpl("D");
         final var c = new TerminalImpl("c");
 
-        final var prodFour = new ContextFreeProductionImpl(C, List.of(a));
-        final var prodFive = new ContextFreeProductionImpl(C, List.of(D));
-        final var prodSeven = new ContextFreeProductionImpl(C, List.of(c));
+        final var prodFour = new ContextFreeProduction(C, List.of(a));
+        final var prodFive = new ContextFreeProduction(C, List.of(D));
+        final var prodSeven = new ContextFreeProduction(C, List.of(c));
 
         final var expectedProductions = Set.of(prodFour, prodFive, prodSeven);
         final var productionsOfC = grammar.productionsOf(C);
