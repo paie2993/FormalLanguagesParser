@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class NextMove {
-    private final List<Symbol> rightSide;
+    private final List<? extends Symbol> rightSide;
     private final int productionNumber;
 
-    public NextMove(List<Symbol> rightSide, int productionNumber) {
+    public NextMove(List<? extends Symbol> rightSide, int productionNumber) {
         this.rightSide = rightSide;
         this.productionNumber = productionNumber;
     }
 
-    public List<Symbol> rightSide() {
+    public List<? extends Symbol> rightSide() {
         return rightSide;
     }
 
