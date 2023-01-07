@@ -27,9 +27,10 @@ public class ConfigurationImpl implements Configuration {
         this.workStack = new Stack<>();
         this.output = new ArrayList<>();
 
-        Collections.reverse(inputSequence);
+        final List<Terminal> inputSequenceCopy = new ArrayList<>(inputSequence);
+        Collections.reverse(inputSequenceCopy);
         this.inputStack.push(ParseTable.DOLLAR_TERMINAL);
-        this.inputStack.addAll(inputSequence);
+        this.inputStack.addAll(inputSequenceCopy);
         this.workStack.push(ParseTable.DOLLAR_TERMINAL);
         this.workStack.push(startSymbol);
     }
@@ -38,10 +39,12 @@ public class ConfigurationImpl implements Configuration {
     public void push(NextMove nextMove) {
         Objects.requireNonNull(nextMove);
 
-        Collections.reverse(nextMove.rightSide());
+        List<Symbol> rightSide = new ArrayList<>(nextMove.rightSide());
+
+        Collections.reverse(rightSide);
 
         this.workStack.pop();
-        this.workStack.addAll(nextMove.rightSide());
+        this.workStack.addAll(rightSide);
         this.output.add(nextMove.productionNumber());
     }
 
