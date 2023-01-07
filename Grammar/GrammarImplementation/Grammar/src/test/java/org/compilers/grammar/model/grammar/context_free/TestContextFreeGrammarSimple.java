@@ -1,7 +1,5 @@
-package org.compilers.grammar.model.grammar;
+package org.compilers.grammar.model.grammar.context_free;
 
-import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammar;
-import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammarImpl;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProductionImpl;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminalImpl;
@@ -12,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
 
-public class TestGrammarSimple {
+public class TestContextFreeGrammarSimple {
 
     private ContextFreeGrammar<? extends ContextFreeProduction> getContextFreeGrammarOne() {
         // non-terminals

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 
-class ContextFreeGrammarTest {
+class TestContextFreeGrammarComplex {
     @Test
     public void concatenate1OnTwoSetsWithoutEpsilon() {
 
