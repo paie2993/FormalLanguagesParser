@@ -1,7 +1,7 @@
 package org.compilers.grammar.parser.ll1;
 
-import java.util.List;
+import org.compilers.grammar.parser.output.ParserOutput;
 
 public interface LL1Parser {
-    List<? extends Integer> parse(String word);
+    ParserOutput parse(String word);
 }

@@ -11,6 +11,8 @@ import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 import org.compilers.grammar.model.vocabulary.terminal.TerminalImpl;
 import org.compilers.grammar.parser.ll1.configuration.ConfigurationImpl;
+import org.compilers.grammar.parser.output.ParserOutput;
+import org.compilers.grammar.parser.output.ParserOutputImpl;
 
 import java.util.*;
 
@@ -25,42 +27,36 @@ public class LL1ParserImpl implements LL1Parser {
     }
 
     @Override
-    public List<? extends Integer> parse(String word) {
-        final List<? extends Terminal> wordAsList = word.chars().mapToObj(String::valueOf).map(TerminalImpl::new).toList();
+    public ParserOutput parse(String word) {
+        final List<? extends Terminal> wordAsList = word.chars().mapToObj(e -> (char)e).map(String::valueOf).map(TerminalImpl::new).toList();
         ConfigurationImpl initialConfiguration = new ConfigurationImpl(wordAsList, this.grammar.startSymbol());
 
         if (this.parse(initialConfiguration)) {
-            return initialConfiguration.output();
+            return new ParserOutputImpl(this.grammar, initialConfiguration.output());
         }
         return null;
     }
 
     private boolean parse(final ConfigurationImpl configuration) {
-        boolean notFinished = true, accepted = false;
-
-        while (notFinished) {
+        while (true) {
             final Symbol workStackPeek = configuration.workStackPeek();
             final Terminal inputStackPeek = configuration.inputStackPeek();
             if (NonTerminal.isNonTerminal(workStackPeek)) {
                 final NextMove nextMove = this.parseTable.get((NonTerminal) workStackPeek, inputStackPeek);
                 if (Objects.isNull(nextMove)) {
-                    notFinished = false;
+                    return false;
                 }
                 configuration.push(nextMove);
             } else {
                 final Action action = this.parseTable.get((Terminal) workStackPeek, inputStackPeek);
                 if (Objects.isNull(action)) {
-                    notFinished = false;
+                    return false;
                 }
                 if (action.equals(Action.ACCEPT)) {
-                    notFinished = false;
-                    accepted = true;
+                    return true;
                 }
                 configuration.pop();
             }
         }
-
-        return accepted;
     }
-
 }
