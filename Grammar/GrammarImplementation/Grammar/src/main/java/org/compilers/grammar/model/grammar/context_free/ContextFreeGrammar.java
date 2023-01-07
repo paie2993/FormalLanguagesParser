@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 public interface ContextFreeGrammar<T extends ContextFreeProduction> extends ContextDependentGrammar<T> {
     Set<String> first(final Symbol symbol);
 
+    Set<String> first(final List<? extends Symbol> symbols);
+
     Set<String> follow(final NonTerminal nonTerminal);
 
     Set<? extends T> productionsOf(final NonTerminal nonTerminal);
@@ -129,7 +131,7 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
 
     static Set<String> first(
             final Map<? extends Symbol, ? extends Set<String>> first,
-            final List<Symbol> symbols
+            final List<? extends Symbol> symbols
     ) {
         return concatenate1(symbols
                 .stream()
@@ -180,7 +182,7 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
 
         for (final NonTerminal nonTerminal : nonTerminals) {
             for (final ContextFreeProduction production : haveSymbolInRightSide(productions, nonTerminal)) {
-                List<Symbol> rightSide = production.rightSide();
+                List<? extends Symbol> rightSide = production.rightSide();
 
                 // if the current non-terminal appears as the last symbol on the right side of the current production
                 // then add the 'follow' of the non-terminal from the left side of the production of the 'follow' of
@@ -194,7 +196,7 @@ public interface ContextFreeGrammar<T extends ContextFreeProduction> extends Con
                 // and add it to the follow of the current non-terminal <br>
                 // if 'epsilon' is in the 'first' of the next symbol after the current non-terminal, then also add
                 // the 'follow' of the left side of the current production to the 'follow' of the current non-terminal
-                List<Symbol> gamma = rightSide.subList(rightSide.indexOf(nonTerminal) + 1, rightSide.size());
+                List<? extends Symbol> gamma = rightSide.subList(rightSide.indexOf(nonTerminal) + 1, rightSide.size());
                 Set<String> firstOfGamma = first(first, gamma);
                 if (firstOfGamma.contains("")) {
                     currentResultSets.get(nonTerminal).addAll(previousResultSets.get(production.leftSideNonTerminal()));

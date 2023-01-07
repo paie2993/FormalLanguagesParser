@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractGrammar<T extends Production> implements Grammar<T> {
     protected final Set<? extends NonTerminal> nonTerminals;
     protected final Set<? extends Terminal> terminals;
-    protected final List<? extends T> productions;
+    protected final List<T> productions;
     protected final NonTerminal startSymbol;
 
     public AbstractGrammar(
@@ -75,17 +75,22 @@ public abstract class AbstractGrammar<T extends Production> implements Grammar<T
     }
 
     @Override
-    public boolean containsProduction(final T production) {
+    public boolean containsProduction(final Production production) {
         Objects.requireNonNull(production);
 
         return this.productions.contains(production);
     }
 
     @Override
-    public int indexOf(final T production) {
+    public int indexOf(final Production production) {
         Objects.requireNonNull(production);
 
         return this.productions.indexOf(production);
+    }
+
+    @Override
+    public T productionAt(int index) {
+        return this.productions.get(index);
     }
 
     @Override

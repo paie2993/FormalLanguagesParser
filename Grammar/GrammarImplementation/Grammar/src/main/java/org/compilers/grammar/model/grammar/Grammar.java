@@ -22,9 +22,11 @@ public interface Grammar<T extends Production> {
 
     boolean containsTerminal(final Symbol terminal);
 
-    boolean containsProduction(final T production);
+    boolean containsProduction(final Production production);
 
-    int indexOf(final T production);
+    int indexOf(final Production production);
+
+    T productionAt(final int index);
 
     // set of productions in which the given symbol appears in the right-side
     // if the symbol does not appear in any right side, returns empty side

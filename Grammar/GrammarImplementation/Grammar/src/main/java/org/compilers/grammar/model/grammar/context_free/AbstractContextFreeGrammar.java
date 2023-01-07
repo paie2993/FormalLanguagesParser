@@ -6,6 +6,7 @@ import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -30,6 +31,16 @@ public abstract class AbstractContextFreeGrammar<T extends ContextFreeProduction
         Objects.requireNonNull(symbol);
 
         return this.first.get(symbol);
+    }
+
+    @Override
+    public Set<String> first(List<? extends Symbol> symbols) {
+        Objects.requireNonNull(symbols);
+
+        return ContextFreeGrammar.concatenate1(symbols
+                .stream()
+                .map(this.first::get)
+                .toList());
     }
 
     @Override
