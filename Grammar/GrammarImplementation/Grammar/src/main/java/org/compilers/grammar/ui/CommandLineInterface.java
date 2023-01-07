@@ -6,12 +6,15 @@ import org.compilers.grammar.model.grammar.context_free.ContextFreeGrammar;
 import org.compilers.grammar.model.grammar.production.Production;
 import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
 import org.compilers.grammar.model.grammar.unrestricted.UnrestrictedGrammar;
+import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminalImpl;
+import org.compilers.grammar.parser.ll1.LL1ParserImpl;
 
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public final class CommandLineInterface {
 
@@ -21,6 +24,9 @@ public final class CommandLineInterface {
 
     public CommandLineInterface() {
         this.grammar = UnrestrictedGrammar.builder().file(grammarFile).build();
+        final var parser = new LL1ParserImpl(ContextFreeGrammar.builder().grammar(this.grammar).build());
+        System.out.println(parser.parse("a*(a+a)").asProductionString().stream().map(Production::toString).collect(Collectors.joining(", ")));
+        System.out.println(parser.parse("a*(a+a)").asDerivationString().stream().map(sententialForm -> sententialForm.stream().map(Symbol::value).collect(Collectors.joining())).collect(Collectors.joining("=>")));
     }
 
     private static void printMenu() {
@@ -81,7 +87,11 @@ public final class CommandLineInterface {
     // set of productions option
     private void printProductions() {
         final var productions = grammar.productions();
-        productions.forEach(System.out::println); // bound method reference
+        productions
+                .stream()
+                .map(production -> String.format("%s - %d", production, grammar.indexOf(production)))
+                .forEach(System.out::println);
+//        productions.forEach(System.out::println); // bound method reference
     }
 
     // productions of non-terminal option
