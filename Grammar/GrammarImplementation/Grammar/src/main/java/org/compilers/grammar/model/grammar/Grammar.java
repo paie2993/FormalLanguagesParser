@@ -61,29 +61,29 @@ public final class Grammar {
     // obtains all the productions (cfg productions) having the left side equal to the given non-terminal
     // returns an unmodifiable set
     public Set<Production> productionsOf(final Symbol nonTerminal) {
-        return productions.stream()
-                .filter(production -> equalsNonTerminal(production.leftSide(), nonTerminal))
-                .collect(Collectors.toUnmodifiableSet());
-    }
+        return productionsOf(nonTerminal, productions);
+    } // tested
 
-    /**
-     * Returns all the productions of the given non-terminal
-     * If the non-terminal is not part of the grammar, returns empty set
-     */
-    public static Set<Production> productionsOf(final Symbol nonTerminal, final Collection<Production> productions) {
+    // the static version of the 'productionsOf(NonTerminal)' method, where the set of all productions is passed
+    // along with the non-terminal that is to be checked
+    //
+    // Returns all the productions of the given non-terminal
+    // If the non-terminal is not part of the grammar, returns empty set
+    private static Set<Production> productionsOf(final Symbol nonTerminal, final Collection<Production> productions) {
         return productions.stream()
-                .filter(production -> equalsNonTerminal(production.leftSide(), nonTerminal))
+                .filter(production -> sideEqualsSymbol(production.leftSide(), nonTerminal))
                 .collect(Collectors.toUnmodifiableSet());
-    }
+    } // tested
 
-    // checks if a side is equals to a symbol (true if side has single symbol)
-    private static boolean equalsNonTerminal(final List<? extends Symbol> side, final Symbol nonTerminal) {
-        if (!(side.size() == 1)) {
+    // checks if a side is equals to a symbol (true only if side has single symbol)
+    // Note: made public for testing
+    public static boolean sideEqualsSymbol(final List<? extends Symbol> side, final Symbol symbol) {
+        if (side.size() != 1) {
             return false;
         }
         final var singleSymbol = side.get(0);
-        return nonTerminal.equals(singleSymbol);
-    }
+        return symbol.equals(singleSymbol);
+    } // pending test
 
     // set of productions in which the given symbol appears in the right-side
     // if the symbol does not appear in any right side, returns empty side
