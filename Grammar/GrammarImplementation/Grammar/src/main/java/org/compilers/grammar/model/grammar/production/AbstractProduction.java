@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractProduction implements Production {
-    protected final List<Symbol> leftSide;
-    protected final List<Symbol> rightSide;
+    protected final List<? extends Symbol> leftSide;
+    protected final List<? extends Symbol> rightSide;
 
-    public AbstractProduction(final List<Symbol> leftSide, final List<Symbol> rightSide) {
+    public AbstractProduction(final List<? extends Symbol> leftSide, final List<? extends Symbol> rightSide) {
         Objects.requireNonNull(leftSide);
         Objects.requireNonNull(rightSide);
 
@@ -19,12 +19,12 @@ public abstract class AbstractProduction implements Production {
     }
 
     @Override
-    public List<Symbol> leftSide() {
+    public List<? extends Symbol> leftSide() {
         return this.leftSide;
     }
 
     @Override
-    public List<Symbol> rightSide() {
+    public List<? extends Symbol> rightSide() {
         return this.rightSide;
     }
 

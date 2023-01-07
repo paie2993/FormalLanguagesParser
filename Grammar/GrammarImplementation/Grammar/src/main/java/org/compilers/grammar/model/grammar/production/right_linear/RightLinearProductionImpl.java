@@ -7,13 +7,13 @@ import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import java.util.List;
 
 public class RightLinearProductionImpl extends AbstractContextFreeProduction implements RightLinearProduction {
-    public RightLinearProductionImpl(final List<Symbol> leftSide, final List<Symbol> rightSide) {
+    public RightLinearProductionImpl(final List<? extends Symbol> leftSide, final List<? extends Symbol> rightSide) {
         super(leftSide, rightSide);
         RightLinearProduction.validateLeftSide(leftSide);
         RightLinearProduction.validateRightSide(rightSide);
     }
 
-    public RightLinearProductionImpl(NonTerminal leftSide, List<Symbol> rightSide) {
+    public RightLinearProductionImpl(final NonTerminal leftSide, final List<? extends Symbol> rightSide) {
         super(leftSide, rightSide);
         RightLinearProduction.validateLeftSide(List.of(leftSide));
         RightLinearProduction.validateRightSide(rightSide);

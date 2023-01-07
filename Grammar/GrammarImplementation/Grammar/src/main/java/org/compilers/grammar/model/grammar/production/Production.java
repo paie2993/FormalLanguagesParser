@@ -9,15 +9,15 @@ public interface Production {
     String EPSILON = "ε";
     String SIDES_SEPARATOR = "->";
 
-    List<Symbol> leftSide();
+    List<? extends Symbol> leftSide();
 
-    List<Symbol> rightSide();
+    List<? extends Symbol> rightSide();
 
     boolean hasSymbolInLeftSide(final Symbol symbol);
 
     boolean hasSymbolInRightSide(final Symbol symbol);
 
-    static String prepareSideForPrinting(final List<Symbol> side) {
+    static String prepareSideForPrinting(final List<? extends Symbol> side) {
         Objects.requireNonNull(side);
 
         final StringBuilder builder = new StringBuilder();
@@ -29,7 +29,7 @@ public interface Production {
         return builder.toString();
     }
 
-    static boolean hasSymbolInSide(final Symbol symbol, final List<Symbol> side) {
+    static boolean hasSymbolInSide(final Symbol symbol, final List<? extends Symbol> side) {
         Objects.requireNonNull(symbol);
         Objects.requireNonNull(side);
 

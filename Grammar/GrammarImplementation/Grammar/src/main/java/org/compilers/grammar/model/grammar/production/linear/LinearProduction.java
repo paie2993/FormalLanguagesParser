@@ -10,11 +10,11 @@ import org.compilers.grammar.model.vocabulary.Symbol;
 import java.util.List;
 
 public interface LinearProduction extends ContextFreeProduction {
-    static void validateLeftSide(final List<Symbol> side) {
+    static void validateLeftSide(final List<? extends Symbol> side) {
         ContextFreeProduction.validateLeftSide(side);
     }
 
-    static void validateRightSide(final List<Symbol> side) {
+    static void validateRightSide(final List<? extends Symbol> side) {
         ContextFreeProduction.validateRightSide(side);
         final long noNonterminals = side.stream().filter(NonTerminal::isNonTerminal).count();
         if (noNonterminals >= 2) {

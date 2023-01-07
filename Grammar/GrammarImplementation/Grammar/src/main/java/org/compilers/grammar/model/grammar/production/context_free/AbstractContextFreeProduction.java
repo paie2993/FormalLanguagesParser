@@ -7,11 +7,11 @@ import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import java.util.List;
 
 public abstract class AbstractContextFreeProduction extends AbstractProduction implements ContextFreeProduction {
-    public AbstractContextFreeProduction(List<Symbol> leftSide, List<Symbol> rightSide) {
+    public AbstractContextFreeProduction(List<? extends Symbol> leftSide, List<? extends Symbol> rightSide) {
         super(leftSide, rightSide);
     }
 
-    public AbstractContextFreeProduction(NonTerminal leftSide, List<Symbol> rightSide) {
+    public AbstractContextFreeProduction(NonTerminal leftSide, List<? extends Symbol> rightSide) {
         super(List.of(leftSide), rightSide);
     }
 

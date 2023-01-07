@@ -11,11 +11,11 @@ import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 import java.util.List;
 
 public interface RightLinearProduction extends LinearProduction {
-    static void validateLeftSide(final List<Symbol> side) {
+    static void validateLeftSide(final List<? extends Symbol> side) {
         LinearProduction.validateLeftSide(side);
     }
 
-    static void validateRightSide(final List<Symbol> side) {
+    static void validateRightSide(final List<? extends Symbol> side) {
         LinearProduction.validateRightSide(side);
         final int length = side.size();
         if (length == 0) {

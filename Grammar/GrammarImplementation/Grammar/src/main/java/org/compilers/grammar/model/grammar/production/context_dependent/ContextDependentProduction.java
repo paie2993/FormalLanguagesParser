@@ -10,7 +10,7 @@ import org.compilers.grammar.model.vocabulary.Symbol;
 import java.util.List;
 
 public interface ContextDependentProduction extends UnrestrictedProduction {
-    static void validateLeftSide(final List<Symbol> side) {
+    static void validateLeftSide(final List<? extends Symbol> side) {
         UnrestrictedProduction.validateLeftSide(side);
         final boolean hasNoNonTerminal = side.stream().noneMatch(NonTerminal::isNonTerminal);
         if (hasNoNonTerminal) {
@@ -18,7 +18,7 @@ public interface ContextDependentProduction extends UnrestrictedProduction {
         }
     }
 
-    static void validateRightSide(final List<Symbol> side) {
+    static void validateRightSide(final List<? extends Symbol> side) {
         UnrestrictedProduction.validateRightSide(side);
     }
 
