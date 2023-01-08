@@ -5,8 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-public final class WordReader {
-    public static List<? extends String> readFromFile(final String fileName) throws IOException {
+public interface WordReader {
+    static List<? extends String> readFromFile(final String fileName) throws IOException {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             final String word = bufferedReader.readLine();
             return word.chars()
