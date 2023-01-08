@@ -13,9 +13,7 @@ import org.compilers.grammar.model.vocabulary.terminal.TerminalImpl;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -111,8 +109,8 @@ public abstract class AbstractGrammarBuilder<T1 extends Production, T2 extends G
 
             final Set<? extends NonTerminal> nonTerminals = readNonTerminals(reader);
             final Set<? extends Terminal> terminals = readTerminals(reader);
-            final Set<? extends UnrestrictedProduction> productions = readProductions(reader, UnrestrictedProduction.builder().symbols(nonTerminals, terminals));
             final NonTerminal startingNonTerminal = readStartingNonTerminal(reader);
+            final Set<? extends UnrestrictedProduction> productions = readProductions(reader, UnrestrictedProduction.builder().symbols(nonTerminals, terminals));
 
             return new UnrestrictedGrammarImpl(nonTerminals, terminals, productions, startingNonTerminal);
         } catch (IOException ioException) {
@@ -133,7 +131,7 @@ public abstract class AbstractGrammarBuilder<T1 extends Production, T2 extends G
             final BufferedReader reader,
             final ProductionBuilder<? extends UnrestrictedProduction> productionBuilder
     ) throws IOException {
-        return buildElements(readTokens(reader), productionString -> productionBuilder.productionString(productionString).build());
+        return buildElements(readTokensOnLines(reader), productionString -> productionBuilder.productionString(productionString).build());
     }
 
     public NonTerminal readStartingNonTerminal(final BufferedReader reader) throws IOException {
@@ -152,6 +150,13 @@ public abstract class AbstractGrammarBuilder<T1 extends Production, T2 extends G
      */
     private String[] readTokens(final BufferedReader reader) throws IOException {
         return readLine(reader).split(separator);
+    }
+
+    private String[] readTokensOnLines(final BufferedReader reader) {
+        return reader.lines()
+                .map(String::trim)
+                .toList()
+                .toArray(new String[]{});
     }
 
     /**
