@@ -10,6 +10,7 @@ import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 import org.compilers.grammar.model.vocabulary.terminal.TerminalImpl;
+import org.compilers.grammar.parser.ll1.configuration.Configuration;
 import org.compilers.grammar.parser.ll1.configuration.ConfigurationImpl;
 import org.compilers.grammar.parser.output.ParserOutput;
 import org.compilers.grammar.parser.output.ParserOutputImpl;
@@ -27,9 +28,12 @@ public class LL1ParserImpl implements LL1Parser {
     }
 
     @Override
-    public ParserOutput parse(String word) {
-        final List<? extends Terminal> wordAsList = word.chars().mapToObj(e -> (char)e).map(String::valueOf).map(TerminalImpl::new).toList();
-        ConfigurationImpl initialConfiguration = new ConfigurationImpl(wordAsList, this.grammar.startSymbol());
+    public ParserOutput parse(final List<? extends String> wordAsList) {
+        final List<? extends Terminal> wordAsTerminalList = wordAsList.stream()
+                .map(TerminalImpl::new)
+                .toList();
+
+        Configuration initialConfiguration = new ConfigurationImpl(wordAsTerminalList, this.grammar.startSymbol());
 
         if (this.parse(initialConfiguration)) {
             return new ParserOutputImpl(this.grammar, initialConfiguration.output());
@@ -37,19 +41,21 @@ public class LL1ParserImpl implements LL1Parser {
         return null;
     }
 
-    private boolean parse(final ConfigurationImpl configuration) {
+    private boolean parse(final Configuration configuration) {
         while (true) {
             final Symbol workStackPeek = configuration.workStackPeek();
             final Terminal inputStackPeek = configuration.inputStackPeek();
             if (NonTerminal.isInstance(workStackPeek)) {
                 final NextMove nextMove = this.parseTable.get((NonTerminal) workStackPeek, inputStackPeek);
                 if (Objects.isNull(nextMove)) {
+                    System.out.println("PARSE ERROR: " + configuration.workStackPeek() + " " + configuration.inputStackPeek());
                     return false;
                 }
                 configuration.push(nextMove);
             } else {
                 final Action action = this.parseTable.get((Terminal) workStackPeek, inputStackPeek);
                 if (Objects.isNull(action)) {
+                    System.out.println("PARSE ERROR: " + configuration.workStackPeek() + " " + configuration.inputStackPeek());
                     return false;
                 }
                 if (action.equals(Action.ACCEPT)) {
