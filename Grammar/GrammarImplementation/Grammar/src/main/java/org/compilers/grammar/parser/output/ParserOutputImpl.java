@@ -8,8 +8,7 @@ import org.compilers.grammar.parser.output.father_sibling_table.entry.TableEntry
 
 import java.util.*;
 
-public class ParserOutputImpl implements ParserOutput
-{
+public class ParserOutputImpl implements ParserOutput {
 
     private final List<? extends AbstractContextFreeProduction> productionsString;
 
@@ -19,11 +18,10 @@ public class ParserOutputImpl implements ParserOutput
 
     // constructor
     public ParserOutputImpl(
-        final List<? extends AbstractContextFreeProduction> productionsString,
-        final List<? extends List<? extends Symbol>> derivationString,
-        final List<? extends TableEntry> table
-    )
-    {
+            final List<? extends AbstractContextFreeProduction> productionsString,
+            final List<? extends List<? extends Symbol>> derivationString,
+            final List<? extends TableEntry> table
+    ) {
         Objects.requireNonNull(productionsString);
         Objects.requireNonNull(derivationString);
         Objects.requireNonNull(table);
@@ -33,10 +31,9 @@ public class ParserOutputImpl implements ParserOutput
     }
 
     public static ParserOutputImpl of(
-        final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
-        final List<? extends Integer> productionIndicesString
-    )
-    {
+            final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
+            final List<? extends Integer> productionIndicesString
+    ) {
         Objects.requireNonNull(grammar);
         Objects.requireNonNull(productionIndicesString);
 
@@ -49,38 +46,33 @@ public class ParserOutputImpl implements ParserOutput
 
     // getters
     @Override
-    public List<? extends AbstractContextFreeProduction> asProductionString()
-    {
+    public List<? extends AbstractContextFreeProduction> asProductionString() {
         return productionsString;
     }
 
     @Override
-    public List<? extends List<? extends Symbol>> asDerivationString()
-    {
+    public List<? extends List<? extends Symbol>> asDerivationString() {
         return derivationString;
     }
 
     @Override
-    public List<? extends TableEntry> asFatherSiblingTable()
-    {
-        return this.table;
+    public List<? extends TableEntry> asFatherSiblingTable() {
+        return table;
     }
 
     // builders
     private static List<? extends AbstractContextFreeProduction> buildProductionString(
-        final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
-        final List<? extends Integer> productionIndicesString
-    )
-    {
+            final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
+            final List<? extends Integer> productionIndicesString
+    ) {
         return productionIndicesString.stream().map(grammar::at).toList();
     }
 
     // production string is the output of the LL1 parsing algorithm, ex: 14714721....
     private static List<? extends List<? extends Symbol>> buildDerivationString(
-        final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
-        final List<? extends Integer> productionsSequence
-    )
-    {
+            final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
+            final List<? extends Integer> productionsSequence
+    ) {
         // initialize the derivation sequence (final result like so: S => 𝜶1 => 𝜶2 =>... => 𝜶n = w)
         List<List<? extends Symbol>> derivationSequence = new ArrayList<>();
 
@@ -99,8 +91,7 @@ public class ParserOutputImpl implements ParserOutput
         derivationSequence.add(firstSententialFormCopy);
 
         // for every production (production index from the 'productionsSequence')
-        for (int index = 1; index < productionsSequence.size(); index++)
-        {
+        for (int index = 1; index < productionsSequence.size(); index++) {
 
             // get the production index (index in the grammar)
             final var currentProductionIndex = productionsSequence.get(index);
@@ -127,10 +118,9 @@ public class ParserOutputImpl implements ParserOutput
     } // tested, good
 
     private static List<? extends TableEntry> buildFatherSiblingTable(
-        final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
-        final List<? extends Integer> productionIndicesString
-    )
-    {
+            final AbstractContextFreeGrammar<? extends AbstractContextFreeProduction> grammar,
+            final List<? extends Integer> productionIndicesString
+    ) {
         final List<TableEntry> tableEntries = new ArrayList<>();
 
         int productionIndex = productionIndicesString.get(0);
@@ -139,27 +129,23 @@ public class ParserOutputImpl implements ParserOutput
         List<Map.Entry<Symbol, Integer>> currentSententialForm = new ArrayList<>();
         currentSententialForm.add(new AbstractMap.SimpleImmutableEntry<>(production.leftSideNonTerminal(), 0));
 
-        for (Integer integer : productionIndicesString)
-        {
+        for (Integer integer : productionIndicesString) {
             productionIndex = integer;
             final var currentProduction = grammar.at(productionIndex);
             Map.Entry<Symbol, Integer> father = currentSententialForm.stream().filter(entry -> currentProduction.leftSideNonTerminal().equals(entry.getKey())).findFirst().orElse(null);
             final int indexOfNonTerminal = currentSententialForm.indexOf(father);
-            if (Objects.isNull(father))
-            {
+            if (Objects.isNull(father)) {
                 continue;
             }
             final int fatherIndex = father.getValue();
             currentSententialForm.remove(father);
-            if (currentProduction.rightSide().isEmpty())
-            {
+            if (currentProduction.rightSide().isEmpty()) {
                 continue;
             }
             TableEntry currentSibling = new TableEntryImpl(currentProduction.rightSide().get(0), fatherIndex, -1);
             tableEntries.add(currentSibling);
             currentSententialForm.add(indexOfNonTerminal, new AbstractMap.SimpleImmutableEntry<>(currentSibling.symbol(), tableEntries.indexOf(currentSibling)));
-            for (int siblingIndex = 1; siblingIndex < currentProduction.rightSide().size(); siblingIndex++)
-            {
+            for (int siblingIndex = 1; siblingIndex < currentProduction.rightSide().size(); siblingIndex++) {
                 currentSibling = new TableEntryImpl(currentProduction.rightSide().get(siblingIndex), fatherIndex, tableEntries.indexOf(currentSibling));
                 tableEntries.add(currentSibling);
                 currentSententialForm.add(indexOfNonTerminal + siblingIndex, new AbstractMap.SimpleImmutableEntry<>(currentSibling.symbol(), tableEntries.indexOf(currentSibling)));

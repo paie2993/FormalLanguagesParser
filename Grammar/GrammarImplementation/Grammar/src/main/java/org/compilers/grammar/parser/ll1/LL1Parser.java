@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LL1Parser {
 
-    ParserOutput parse(final List<String> word);
+    ParserOutput parse(final List<? extends String> word);
 }

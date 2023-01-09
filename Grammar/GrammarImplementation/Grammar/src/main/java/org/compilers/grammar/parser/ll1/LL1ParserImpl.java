@@ -33,13 +33,13 @@ public final class LL1ParserImpl implements LL1Parser
     // parsing algorithm
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public ParserOutput parse(final List<String> word)
+    public ParserOutput parse(final List<? extends String> word)
     {
         final var configuration = parseWord(word);
         return ParserOutputImpl.of(grammar, configuration.output());
     }
 
-    private Configuration parseWord(final List<String> word)
+    private Configuration parseWord(final List<? extends String> word)
     {
 
         final var wordTerminals = word.stream().map(TerminalImpl::new).toList();

@@ -49,6 +49,6 @@ public class TableEntryImpl implements TableEntry {
 
     @Override
     public String toString() {
-        return String.format("(%s, %d, %d)", this.info.value(), this.parentIndex, this.rightSiblingIndex);
+        return String.format("%-15s | %-15d | %-15d", info.value(), parentIndex, rightSiblingIndex);
     }
 }

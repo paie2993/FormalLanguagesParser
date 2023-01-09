@@ -6,11 +6,12 @@ import org.compilers.grammar.model.grammar.reader.GrammarReader;
 import org.compilers.grammar.model.production.context_free.AbstractContextFreeProduction;
 import org.compilers.grammar.model.production.context_free.ContextFreeProductionBuilder;
 import org.compilers.grammar.parser.ll1.LL1ParserImpl;
+import org.compilers.grammar.parser.reader.PIFReader;
+import org.compilers.grammar.parser.reader.WordReader;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Application {
 
@@ -18,13 +19,13 @@ public final class Application {
     private static final String SEQUENCE_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_input/sequences/seq.txt";
     private static final String FIRST_OUTPUT_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_output/out1.txt";
 
-    private static final String SECOND_GRAMMAR_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_input/grammars/g2.txt";
-    private static final String PIF_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_input/pifs/pif1.txt";
+    private static final String SECOND_GRAMMAR_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_input/grammars/g3.txt";
+    private static final String PIF_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_input/pifs/p3-2_pif.out";
     private static final String SECOND_OUTPUT_FILE = "Grammar/GrammarImplementation/Grammar/src/main/java/org/compilers/grammar/parser_output/out2.txt";
 
-    public static void main(final String[] args) {
-//        firstGrammar();
-        secondGrammar();
+    public static void main(final String[] args) throws IOException {
+        firstGrammar();
+//        secondGrammar();
     }
 
     private static void printList(final List<?> list, final BufferedWriter writer) {
@@ -38,7 +39,21 @@ public final class Application {
         });
     }
 
-    private static void secondGrammar() {
+    private static void printTable(final List<?> list, final BufferedWriter writer) throws IOException {
+        writer.write(String.format("%-15s | %-15s | %-15s | %-15s", "Index", "Info", "Parent", "Right Sibling"));
+        writer.newLine();
+        final var i = new AtomicInteger(0);
+        list.forEach(entry -> {
+            try {
+                writer.write(String.format("%-15d | %s", i.getAndIncrement(), entry.toString()));
+                writer.newLine();
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private static void secondGrammar() throws IOException {
         // initialize a production builder
         final var productionBuilder = new ContextFreeProductionBuilder();
 
@@ -59,20 +74,7 @@ public final class Application {
 
         final var ll1Parser = new LL1ParserImpl(grammar);
 
-        final List<String> list = new ArrayList<>();
-        try (final var reader = new BufferedReader(new FileReader(PIF_FILE))) {
-            var line = reader.readLine();
-            while (line != null) {
-                final var processedLine = line.trim();
-                final var tokens = processedLine.split("\\|");
-                final var pifLabel = tokens[0];
-                list.add(pifLabel);
-                line = reader.readLine();
-            }
-        } catch (final IOException e) {
-            System.out.println(e.getMessage());
-        }
-
+        final var list = PIFReader.readFromFile(PIF_FILE);
         final var output = ll1Parser.parse(list);
 
         try (final var writer = new BufferedWriter(new FileWriter(FIRST_OUTPUT_FILE))) {
@@ -85,12 +87,16 @@ public final class Application {
             writer.newLine();
             printList(output.asDerivationString(), writer);
 
+            writer.write("As table");
+            writer.newLine();
+            writer.write(output.asFatherSiblingTable().toString());
+
         } catch (final IOException exception) {
             System.out.println(exception.getMessage());
         }
     }
 
-    private static void firstGrammar() {
+    private static void firstGrammar() throws IOException {
         // initialize a production builder
         final var productionBuilder = new ContextFreeProductionBuilder();
 
@@ -111,15 +117,7 @@ public final class Application {
 
         final var ll1Parser = new LL1ParserImpl(grammar);
 
-        var word = "";
-        try (final var reader = new BufferedReader(new FileReader(SEQUENCE_FILE))) {
-            word = reader.readLine().trim();
-        } catch (final IOException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        final var tokens = Arrays.stream(word.split("")).toList();
+        final var tokens = WordReader.readFromFile(SEQUENCE_FILE);
         final var output = ll1Parser.parse(tokens);
 
         try (final var writer = new BufferedWriter(new FileWriter(FIRST_OUTPUT_FILE))) {
@@ -131,6 +129,10 @@ public final class Application {
             writer.write("As derivation string");
             writer.newLine();
             printList(output.asDerivationString(), writer);
+
+            writer.write("As table");
+            writer.newLine();
+            printTable(output.asFatherSiblingTable(), writer);
 
         } catch (final IOException exception) {
             System.out.println(exception.getMessage());

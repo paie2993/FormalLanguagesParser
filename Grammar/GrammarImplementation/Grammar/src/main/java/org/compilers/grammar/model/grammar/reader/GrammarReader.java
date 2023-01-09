@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public final class GrammarReader {
 
-    private final static String SEPARATOR = ";";
+    private final static String SEPARATOR = "@";
 
     // reading all the grammar elements from the file
     //
@@ -29,11 +29,11 @@ public final class GrammarReader {
 
             final var nonTerminals = readNonTerminals(reader);
             final var terminals = readTerminals(reader);
+            final var startingNonTerminal = readStartingNonTerminal(reader);
 
             // must set the context of non-terminals and terminals, otherwise productions can't be read and built
             productionBuilder.context(nonTerminals, terminals);
             final var productions = readProductions(reader, productionBuilder);
-            final var startingNonTerminal = readStartingNonTerminal(reader);
 
             return new GrammarElements<>(nonTerminals, terminals, productions, startingNonTerminal);
         }
@@ -42,8 +42,8 @@ public final class GrammarReader {
     // the methods in this group are dependent, should be called in order:
     // 1. readNonTerminals
     // 2. readTerminals
-    // 3. readProductions
-    // 4. readStartingNonTerminal
+    // 3. readStartingNonTerminal
+    // 4. readProductions
     // failure to comply leads to undefined behaviour
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // reading the non-terminals
@@ -63,10 +63,7 @@ public final class GrammarReader {
             final BufferedReader reader,
             final ProductionBuilder<T> productionBuilder
     ) throws IOException {
-        final var tokens = readTokens(reader);
-        return Arrays.stream(tokens)
-                .map(productionBuilder::build)
-                .toList();
+        return reader.lines().map(productionBuilder::build).toList();
     }
 
     // reading the starting symbol
