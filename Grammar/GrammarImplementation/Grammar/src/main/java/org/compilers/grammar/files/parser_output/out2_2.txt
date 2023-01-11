@@ -1,0 +1,546 @@
+As production string:
+<program> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <declaration>
+<declaration> -> let<compound_declaration>;
+<compound_declaration> -> <simple_declaration><compound_declaration_element>
+<simple_declaration> -> <id_list>:<type>
+<id_list> -> id<id_list_element>
+<id_list_element> -> ε
+<type> -> <simple_type><complex_type>
+<simple_type> -> integer
+<complex_type> -> ε
+<compound_declaration_element> -> ,<compound_declaration>
+<compound_declaration> -> <simple_declaration><compound_declaration_element>
+<simple_declaration> -> <id_list>:<type>
+<id_list> -> id<id_list_element>
+<id_list_element> -> ε
+<type> -> <simple_type><complex_type>
+<simple_type> -> integer
+<complex_type> -> ε
+<compound_declaration_element> -> ,<compound_declaration>
+<compound_declaration> -> <simple_declaration><compound_declaration_element>
+<simple_declaration> -> <id_list>:<type>
+<id_list> -> id<id_list_element>
+<id_list_element> -> ε
+<type> -> <simple_type><complex_type>
+<simple_type> -> integer
+<complex_type> -> ε
+<compound_declaration_element> -> ε
+<lines_element> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <statement>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <io_stmt>
+<io_stmt> -> write(<expression_list>);
+<expression_list> -> <expression><expression_list_element>
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> const
+<term_element> -> ε
+<expression_element> -> ε
+<expression_list_element> -> ε
+<lines_element> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <statement>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <io_stmt>
+<io_stmt> -> read(<id>);
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<lines_element> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <statement>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <io_stmt>
+<io_stmt> -> read(<id>);
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<lines_element> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <statement>
+<statement> -> <structured_statement>
+<structured_statement> -> <while_stmt>
+<while_stmt> -> while<c_expression>do<compound_stmt>
+<c_expression> -> <c_term><c_expression_element>
+<c_term> -> <c_factor><c_factor_element>
+<c_factor> -> <condition>
+<condition> -> <expression><condition_element>
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> ε
+<expression_element> -> ε
+<condition_element> -> <relational_op><expression>
+<relational_op> -> isnot
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> const
+<term_element> -> ε
+<expression_element> -> ε
+<c_factor_element> -> ε
+<c_expression_element> -> ε
+<compound_stmt> -> begin<stmt_list>end
+<stmt_list> -> <statement><stmt_list_element>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <assignment_stmt>
+<assignment_stmt> -> <id><assignment_stmt_element>;
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<assignment_stmt_element> -> <assignment_b_op><expression>
+<assignment_b_op> -> =
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> <arithmetic_p_op><term>
+<arithmetic_p_op> -> %
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> ε
+<expression_element> -> ε
+<stmt_list_element> -> <stmt_list>
+<stmt_list> -> <statement><stmt_list_element>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <assignment_stmt>
+<assignment_stmt> -> <id><assignment_stmt_element>;
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<assignment_stmt_element> -> <assignment_b_op><expression>
+<assignment_b_op> -> =
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> ε
+<expression_element> -> ε
+<stmt_list_element> -> <stmt_list>
+<stmt_list> -> <statement><stmt_list_element>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <assignment_stmt>
+<assignment_stmt> -> <id><assignment_stmt_element>;
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<assignment_stmt_element> -> <assignment_b_op><expression>
+<assignment_b_op> -> =
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> ε
+<expression_element> -> ε
+<stmt_list_element> -> ε
+<lines_element> -> <lines>
+<lines> -> <line><lines_element>
+<line> -> <statement>
+<statement> -> <simple_stmt>
+<simple_stmt> -> <io_stmt>
+<io_stmt> -> write(<expression_list>);
+<expression_list> -> <expression><expression_list_element>
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> const
+<term_element> -> ε
+<expression_element> -> ε
+<expression_list_element> -> ,<expression_list>
+<expression_list> -> <expression><expression_list_element>
+<expression> -> <term><expression_element>
+<term> -> <factor><term_element>
+<factor> -> <id>
+<id> -> id<array_or_not>
+<array_or_not> -> ε
+<term_element> -> ε
+<expression_element> -> ε
+<expression_list_element> -> ε
+<lines_element> -> ε
+
+As derivation sequence:
+[<program>]
+[<lines>]
+[<line>, <lines_element>]
+[<declaration>, <lines_element>]
+[let, <compound_declaration>, ;, <lines_element>]
+[let, <simple_declaration>, <compound_declaration_element>, ;, <lines_element>]
+[let, <id_list>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, <id_list_element>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, <simple_type>, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, <compound_declaration>, ;, <lines_element>]
+[let, id, :, integer, ,, <simple_declaration>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, <id_list>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, <id_list_element>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, <simple_type>, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, <compound_declaration>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, <simple_declaration>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, <id_list>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, <id_list_element>, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, <type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, <simple_type>, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, <complex_type>, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, <compound_declaration_element>, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <lines>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <line>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <simple_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, <io_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, <expression_list>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, <expression>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, <term>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, <factor>, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <lines>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <line>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <simple_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, <io_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, <id>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, <array_or_not>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <lines>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <line>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <simple_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, <io_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, <id>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, <array_or_not>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <lines>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <line>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <structured_statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, <while_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <c_expression>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <c_term>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <c_factor>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <condition>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <expression>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <term>, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <factor>, <term_element>, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, <id>, <term_element>, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, <array_or_not>, <term_element>, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, <term_element>, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, <expression_element>, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, <condition_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, <relational_op>, <expression>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, <expression>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, <term>, <expression_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, <factor>, <term_element>, <expression_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, <term_element>, <expression_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, <expression_element>, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, <c_factor_element>, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, <c_expression_element>, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, <compound_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, <stmt_list>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, <statement>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, <simple_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, <assignment_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, <id>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, <array_or_not>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, <assignment_b_op>, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, <term>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, <factor>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, <id>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, <array_or_not>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, <arithmetic_p_op>, <term>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, <term>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, <factor>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, <id>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, <array_or_not>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <stmt_list>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <statement>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <simple_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <assignment_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, <id>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, <array_or_not>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, <assignment_b_op>, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, <term>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, <factor>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, <id>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, <array_or_not>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <stmt_list>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <statement>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <simple_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <assignment_stmt>, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, <id>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, <array_or_not>, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, <assignment_stmt_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, <assignment_b_op>, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, <expression>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, <term>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, <factor>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, <id>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, <array_or_not>, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, <term_element>, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, <expression_element>, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, <stmt_list_element>, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <lines>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <line>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <statement>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <simple_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, <io_stmt>, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, <expression_list>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, <expression>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, <term>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, <factor>, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, <expression_list>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, <expression>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, <term>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, <factor>, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, <id>, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, <array_or_not>, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, <term_element>, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, <expression_element>, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, <expression_list_element>, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, ), ;, <lines_element>]
+[let, id, :, integer, ,, id, :, integer, ,, id, :, integer, ;, write, (, const, ), ;, read, (, id, ), ;, read, (, id, ), ;, while, id, isnot, const, do, begin, id, =, id, %, id, ;, id, =, id, ;, id, =, id, ;, end, write, (, const, ,, id, ), ;]
+
+As father-sibling table:
+Index                | Info                 | Parent               | Right sibling       
+0                    | <program>                 | -1                        | -1                       
+1                    | <lines>                   | 0                         | -1                       
+2                    | <line>                    | 1                         | -1                       
+3                    | <lines_element>           | 1                         | 2                        
+4                    | <declaration>             | 2                         | -1                       
+5                    | let                       | 4                         | -1                       
+6                    | <compound_declaration>    | 4                         | 5                        
+7                    | ;                         | 4                         | 6                        
+8                    | <simple_declaration>      | 6                         | -1                       
+9                    | <compound_declaration_element> | 6                         | 8                        
+10                   | <id_list>                 | 8                         | -1                       
+11                   | :                         | 8                         | 10                       
+12                   | <type>                    | 8                         | 11                       
+13                   | id                        | 10                        | -1                       
+14                   | <id_list_element>         | 10                        | 13                       
+15                   | <simple_type>             | 12                        | -1                       
+16                   | <complex_type>            | 12                        | 15                       
+17                   | integer                   | 15                        | -1                       
+18                   | ,                         | 9                         | -1                       
+19                   | <compound_declaration>    | 9                         | 18                       
+20                   | <simple_declaration>      | 19                        | -1                       
+21                   | <compound_declaration_element> | 19                        | 20                       
+22                   | <id_list>                 | 20                        | -1                       
+23                   | :                         | 20                        | 22                       
+24                   | <type>                    | 20                        | 23                       
+25                   | id                        | 22                        | -1                       
+26                   | <id_list_element>         | 22                        | 25                       
+27                   | <simple_type>             | 24                        | -1                       
+28                   | <complex_type>            | 24                        | 27                       
+29                   | integer                   | 27                        | -1                       
+30                   | ,                         | 21                        | -1                       
+31                   | <compound_declaration>    | 21                        | 30                       
+32                   | <simple_declaration>      | 31                        | -1                       
+33                   | <compound_declaration_element> | 31                        | 32                       
+34                   | <id_list>                 | 32                        | -1                       
+35                   | :                         | 32                        | 34                       
+36                   | <type>                    | 32                        | 35                       
+37                   | id                        | 34                        | -1                       
+38                   | <id_list_element>         | 34                        | 37                       
+39                   | <simple_type>             | 36                        | -1                       
+40                   | <complex_type>            | 36                        | 39                       
+41                   | integer                   | 39                        | -1                       
+42                   | <lines>                   | 3                         | -1                       
+43                   | <line>                    | 42                        | -1                       
+44                   | <lines_element>           | 42                        | 43                       
+45                   | <statement>               | 43                        | -1                       
+46                   | <simple_stmt>             | 45                        | -1                       
+47                   | <io_stmt>                 | 46                        | -1                       
+48                   | write                     | 47                        | -1                       
+49                   | (                         | 47                        | 48                       
+50                   | <expression_list>         | 47                        | 49                       
+51                   | )                         | 47                        | 50                       
+52                   | ;                         | 47                        | 51                       
+53                   | <expression>              | 50                        | -1                       
+54                   | <expression_list_element> | 50                        | 53                       
+55                   | <term>                    | 53                        | -1                       
+56                   | <expression_element>      | 53                        | 55                       
+57                   | <factor>                  | 55                        | -1                       
+58                   | <term_element>            | 55                        | 57                       
+59                   | const                     | 57                        | -1                       
+60                   | <lines>                   | 44                        | -1                       
+61                   | <line>                    | 60                        | -1                       
+62                   | <lines_element>           | 60                        | 61                       
+63                   | <statement>               | 61                        | -1                       
+64                   | <simple_stmt>             | 63                        | -1                       
+65                   | <io_stmt>                 | 64                        | -1                       
+66                   | read                      | 65                        | -1                       
+67                   | (                         | 65                        | 66                       
+68                   | <id>                      | 65                        | 67                       
+69                   | )                         | 65                        | 68                       
+70                   | ;                         | 65                        | 69                       
+71                   | id                        | 68                        | -1                       
+72                   | <array_or_not>            | 68                        | 71                       
+73                   | <lines>                   | 62                        | -1                       
+74                   | <line>                    | 73                        | -1                       
+75                   | <lines_element>           | 73                        | 74                       
+76                   | <statement>               | 74                        | -1                       
+77                   | <simple_stmt>             | 76                        | -1                       
+78                   | <io_stmt>                 | 77                        | -1                       
+79                   | read                      | 78                        | -1                       
+80                   | (                         | 78                        | 79                       
+81                   | <id>                      | 78                        | 80                       
+82                   | )                         | 78                        | 81                       
+83                   | ;                         | 78                        | 82                       
+84                   | id                        | 81                        | -1                       
+85                   | <array_or_not>            | 81                        | 84                       
+86                   | <lines>                   | 75                        | -1                       
+87                   | <line>                    | 86                        | -1                       
+88                   | <lines_element>           | 86                        | 87                       
+89                   | <statement>               | 87                        | -1                       
+90                   | <structured_statement>    | 89                        | -1                       
+91                   | <while_stmt>              | 90                        | -1                       
+92                   | while                     | 91                        | -1                       
+93                   | <c_expression>            | 91                        | 92                       
+94                   | do                        | 91                        | 93                       
+95                   | <compound_stmt>           | 91                        | 94                       
+96                   | <c_term>                  | 93                        | -1                       
+97                   | <c_expression_element>    | 93                        | 96                       
+98                   | <c_factor>                | 96                        | -1                       
+99                   | <c_factor_element>        | 96                        | 98                       
+100                  | <condition>               | 98                        | -1                       
+101                  | <expression>              | 100                       | -1                       
+102                  | <condition_element>       | 100                       | 101                      
+103                  | <term>                    | 101                       | -1                       
+104                  | <expression_element>      | 101                       | 103                      
+105                  | <factor>                  | 103                       | -1                       
+106                  | <term_element>            | 103                       | 105                      
+107                  | <id>                      | 105                       | -1                       
+108                  | id                        | 107                       | -1                       
+109                  | <array_or_not>            | 107                       | 108                      
+110                  | <relational_op>           | 102                       | -1                       
+111                  | <expression>              | 102                       | 110                      
+112                  | isnot                     | 110                       | -1                       
+113                  | <term>                    | 111                       | -1                       
+114                  | <expression_element>      | 111                       | 113                      
+115                  | <factor>                  | 113                       | -1                       
+116                  | <term_element>            | 113                       | 115                      
+117                  | const                     | 115                       | -1                       
+118                  | begin                     | 95                        | -1                       
+119                  | <stmt_list>               | 95                        | 118                      
+120                  | end                       | 95                        | 119                      
+121                  | <statement>               | 119                       | -1                       
+122                  | <stmt_list_element>       | 119                       | 121                      
+123                  | <simple_stmt>             | 121                       | -1                       
+124                  | <assignment_stmt>         | 123                       | -1                       
+125                  | <id>                      | 124                       | -1                       
+126                  | <assignment_stmt_element> | 124                       | 125                      
+127                  | ;                         | 124                       | 126                      
+128                  | id                        | 125                       | -1                       
+129                  | <array_or_not>            | 125                       | 128                      
+130                  | <assignment_b_op>         | 126                       | -1                       
+131                  | <expression>              | 126                       | 130                      
+132                  | =                         | 130                       | -1                       
+133                  | <term>                    | 131                       | -1                       
+134                  | <expression_element>      | 131                       | 133                      
+135                  | <factor>                  | 133                       | -1                       
+136                  | <term_element>            | 133                       | 135                      
+137                  | <id>                      | 135                       | -1                       
+138                  | id                        | 137                       | -1                       
+139                  | <array_or_not>            | 137                       | 138                      
+140                  | <arithmetic_p_op>         | 136                       | -1                       
+141                  | <term>                    | 136                       | 140                      
+142                  | %                         | 140                       | -1                       
+143                  | <factor>                  | 141                       | -1                       
+144                  | <term_element>            | 141                       | 143                      
+145                  | <id>                      | 143                       | -1                       
+146                  | id                        | 145                       | -1                       
+147                  | <array_or_not>            | 145                       | 146                      
+148                  | <stmt_list>               | 122                       | -1                       
+149                  | <statement>               | 148                       | -1                       
+150                  | <stmt_list_element>       | 148                       | 149                      
+151                  | <simple_stmt>             | 149                       | -1                       
+152                  | <assignment_stmt>         | 151                       | -1                       
+153                  | <id>                      | 152                       | -1                       
+154                  | <assignment_stmt_element> | 152                       | 153                      
+155                  | ;                         | 152                       | 154                      
+156                  | id                        | 153                       | -1                       
+157                  | <array_or_not>            | 153                       | 156                      
+158                  | <assignment_b_op>         | 154                       | -1                       
+159                  | <expression>              | 154                       | 158                      
+160                  | =                         | 158                       | -1                       
+161                  | <term>                    | 159                       | -1                       
+162                  | <expression_element>      | 159                       | 161                      
+163                  | <factor>                  | 161                       | -1                       
+164                  | <term_element>            | 161                       | 163                      
+165                  | <id>                      | 163                       | -1                       
+166                  | id                        | 165                       | -1                       
+167                  | <array_or_not>            | 165                       | 166                      
+168                  | <stmt_list>               | 150                       | -1                       
+169                  | <statement>               | 168                       | -1                       
+170                  | <stmt_list_element>       | 168                       | 169                      
+171                  | <simple_stmt>             | 169                       | -1                       
+172                  | <assignment_stmt>         | 171                       | -1                       
+173                  | <id>                      | 172                       | -1                       
+174                  | <assignment_stmt_element> | 172                       | 173                      
+175                  | ;                         | 172                       | 174                      
+176                  | id                        | 173                       | -1                       
+177                  | <array_or_not>            | 173                       | 176                      
+178                  | <assignment_b_op>         | 174                       | -1                       
+179                  | <expression>              | 174                       | 178                      
+180                  | =                         | 178                       | -1                       
+181                  | <term>                    | 179                       | -1                       
+182                  | <expression_element>      | 179                       | 181                      
+183                  | <factor>                  | 181                       | -1                       
+184                  | <term_element>            | 181                       | 183                      
+185                  | <id>                      | 183                       | -1                       
+186                  | id                        | 185                       | -1                       
+187                  | <array_or_not>            | 185                       | 186                      
+188                  | <lines>                   | 88                        | -1                       
+189                  | <line>                    | 188                       | -1                       
+190                  | <lines_element>           | 188                       | 189                      
+191                  | <statement>               | 189                       | -1                       
+192                  | <simple_stmt>             | 191                       | -1                       
+193                  | <io_stmt>                 | 192                       | -1                       
+194                  | write                     | 193                       | -1                       
+195                  | (                         | 193                       | 194                      
+196                  | <expression_list>         | 193                       | 195                      
+197                  | )                         | 193                       | 196                      
+198                  | ;                         | 193                       | 197                      
+199                  | <expression>              | 196                       | -1                       
+200                  | <expression_list_element> | 196                       | 199                      
+201                  | <term>                    | 199                       | -1                       
+202                  | <expression_element>      | 199                       | 201                      
+203                  | <factor>                  | 201                       | -1                       
+204                  | <term_element>            | 201                       | 203                      
+205                  | const                     | 203                       | -1                       
+206                  | ,                         | 200                       | -1                       
+207                  | <expression_list>         | 200                       | 206                      
+208                  | <expression>              | 207                       | -1                       
+209                  | <expression_list_element> | 207                       | 208                      
+210                  | <term>                    | 208                       | -1                       
+211                  | <expression_element>      | 208                       | 210                      
+212                  | <factor>                  | 210                       | -1                       
+213                  | <term_element>            | 210                       | 212                      
+214                  | <id>                      | 212                       | -1                       
+215                  | id                        | 214                       | -1                       
+216                  | <array_or_not>            | 214                       | 215                      

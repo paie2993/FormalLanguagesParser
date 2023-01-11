@@ -20,10 +20,12 @@ public interface ParserOutputWriter {
             writer.write("As production string:");
             writer.newLine();
             writeList(writer, output.asProductionString());
+            writer.newLine();
 
             writer.write("As derivation sequence:");
             writer.newLine();
             writeList(writer, output.asDerivationString());
+            writer.newLine();
 
             writer.write("As father-sibling table:");
             writer.newLine();
@@ -44,6 +46,7 @@ public interface ParserOutputWriter {
 
     private static void writeTable(final BufferedWriter writer, final List<? extends TableEntry> table) throws IOException {
         writer.write(String.format("%-20s | %-20s | %-20s | %-20s", "Index", "Info", "Parent", "Right sibling"));
+        writer.newLine();
         final var index = new AtomicInteger(0);
         table.forEach(entry -> {
             try {
