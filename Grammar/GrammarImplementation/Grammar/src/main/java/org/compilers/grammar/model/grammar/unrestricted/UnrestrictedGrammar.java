@@ -1,12 +1,20 @@
 package org.compilers.grammar.model.grammar.unrestricted;
 
-import org.compilers.grammar.model.grammar.Grammar;
-import org.compilers.grammar.model.grammar.builder.GrammarBuilder;
-import org.compilers.grammar.model.grammar.production.unrestricted.UnrestrictedProduction;
-import org.compilers.grammar.model.grammar.unrestricted.builder.UnrestrictedGrammarBuilder;
+import org.compilers.grammar.model.production.unrestricted.AbstractUnrestrictedProduction;
+import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
+import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
-public interface UnrestrictedGrammar<T extends UnrestrictedProduction> extends Grammar<T> {
-    static GrammarBuilder<? extends UnrestrictedProduction, ? extends UnrestrictedGrammar<? extends UnrestrictedProduction>> builder() {
-        return new UnrestrictedGrammarBuilder();
+import java.util.List;
+import java.util.Set;
+
+public final class UnrestrictedGrammar extends AbstractUnrestrictedGrammar<AbstractUnrestrictedProduction> {
+
+    public UnrestrictedGrammar(
+            final Set<? extends NonTerminal> nonTerminals,
+            final Set<? extends Terminal> terminals,
+            final List<AbstractUnrestrictedProduction> productions,
+            final NonTerminal startNonTerminal
+    ) {
+        super(nonTerminals, terminals, productions, startNonTerminal);
     }
 }

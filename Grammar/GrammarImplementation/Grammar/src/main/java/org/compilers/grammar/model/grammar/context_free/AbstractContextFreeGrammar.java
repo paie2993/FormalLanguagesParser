@@ -1,62 +1,60 @@
 package org.compilers.grammar.model.grammar.context_free;
 
-import org.compilers.grammar.model.grammar.AbstractGrammar;
-import org.compilers.grammar.model.grammar.production.context_free.ContextFreeProduction;
+import org.compilers.grammar.model.grammar.context_dependent.AbstractContextDependentGrammar;
+import org.compilers.grammar.model.grammar.context_free.first.First1;
+import org.compilers.grammar.model.grammar.context_free.follow.Follow1;
+import org.compilers.grammar.model.production.context_free.AbstractContextFreeProduction;
 import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbstractContextFreeGrammar<T extends ContextFreeProduction> extends AbstractGrammar<T> implements ContextFreeGrammar<T> {
+public abstract class AbstractContextFreeGrammar<T extends AbstractContextFreeProduction> extends AbstractContextDependentGrammar<T> {
+
     protected final Map<? extends Symbol, ? extends Set<String>> first;
     protected final Map<? extends NonTerminal, ? extends Set<String>> follow;
 
+    // constructor
     public AbstractContextFreeGrammar(
             final Set<? extends NonTerminal> nonTerminals,
             final Set<? extends Terminal> terminals,
-            final Set<? extends T> productions,
-            final NonTerminal startSymbol) {
-        super(nonTerminals, terminals, productions, startSymbol);
-        this.first = ContextFreeGrammar.first(terminals, nonTerminals, productions);
-        this.follow = ContextFreeGrammar.follow(this.first, nonTerminals, startSymbol, productions);
+            final List<T> productions,
+            final NonTerminal startNonTerminal
+    ) {
+        super(nonTerminals, terminals, productions, startNonTerminal);
+
+        final var first = First1.first(terminals, nonTerminals, productions);
+        this.first = first;
+        this.follow = Follow1.follow(first, nonTerminals, startNonTerminal, productions);
     }
 
-    @Override
-    public Set<String> first(final Symbol symbol) {
-        Objects.requireNonNull(symbol);
-
-        return this.first.get(symbol);
+    // getters
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public Map<? extends Symbol, ? extends Set<String>> first() {
+        return first;
     }
 
-    @Override
-    public Set<String> first(List<? extends Symbol> symbols) {
-        Objects.requireNonNull(symbols);
-
-        return ContextFreeGrammar.concatenate1(symbols
-                .stream()
-                .map(this.first::get)
-                .toList());
+    public Map<? extends NonTerminal, ? extends Set<String>> follow() {
+        return follow;
     }
 
-    @Override
-    public Set<String> follow(final NonTerminal nonTerminal) {
-        Objects.requireNonNull(nonTerminal);
-
-        return this.follow.get(nonTerminal);
-    }
-
-    @Override
+    // all the productions for which the left side is equal to the given non-terminal
     public Set<? extends T> productionsOf(final NonTerminal nonTerminal) {
         Objects.requireNonNull(nonTerminal);
+        return productionsOf(nonTerminal, productions);
+    }
 
-        return this.productions
-                .stream()
+    // Note: Made public for testing
+    public static <T extends AbstractContextFreeProduction> Set<? extends T> productionsOf(
+            final NonTerminal nonTerminal,
+            final Collection<? extends T> productions
+    ) {
+        Objects.requireNonNull(nonTerminal);
+        Objects.requireNonNull(productions);
+        return productions.stream()
                 .filter(production -> nonTerminal.equals(production.leftSideNonTerminal()))
                 .collect(Collectors.toUnmodifiableSet());
-    }
+    } // pending testing
 }

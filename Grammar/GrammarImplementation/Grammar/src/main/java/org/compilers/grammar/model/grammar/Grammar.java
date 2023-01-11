@@ -1,38 +1,27 @@
 package org.compilers.grammar.model.grammar;
 
-import org.compilers.grammar.model.grammar.production.Production;
+import org.compilers.grammar.model.production.Production;
 import org.compilers.grammar.model.vocabulary.nonterminal.NonTerminal;
-import org.compilers.grammar.model.vocabulary.Symbol;
 import org.compilers.grammar.model.vocabulary.terminal.Terminal;
 
+import java.util.List;
 import java.util.Set;
 
 public interface Grammar<T extends Production> {
+
+    // getters
     Set<? extends NonTerminal> nonTerminals();
 
     Set<? extends Terminal> terminals();
 
-    Set<? extends T> productions();
+    List<T> productions();
 
-    NonTerminal startSymbol();
+    NonTerminal startNonTerminal();
 
-    boolean containsSymbol(final Symbol symbol);
+    // complex getters
+    boolean containsNonTerminal(final NonTerminal nonTerminal);
 
-    boolean containsNonTerminal(final Symbol nonTerminal);
+    int indexOf(final T production);
 
-    boolean containsTerminal(final Symbol terminal);
-
-    boolean containsProduction(final Production production);
-
-    int indexOf(final Production production);
-
-    T productionAt(final int index);
-
-    // set of productions in which the given symbol appears in the right-side
-    // if the symbol does not appear in any right side, returns empty side
-    Set<? extends T> haveSymbolInRightSide(final Symbol symbol);
-
-    // set of productions in which the given symbol appears in the left-side
-    // if the symbol does not appear in any left side, returns empty side
-    Set<? extends T> haveSymbolInLeftSide(final Symbol symbol);
+    T at(final int productionIndex);
 }
