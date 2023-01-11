@@ -6,6 +6,7 @@ import org.compilers.grammar.model.grammar.reader.GrammarReader;
 import org.compilers.grammar.model.production.context_free.AbstractContextFreeProduction;
 import org.compilers.grammar.model.production.context_free.ContextFreeProductionBuilder;
 import org.compilers.grammar.parser.ll1.LL1ParserImpl;
+import org.compilers.grammar.parser.output.father_sibling_table.entry.TableEntry;
 import org.compilers.grammar.parser.reader.PIFReader;
 import org.compilers.grammar.parser.reader.WordReader;
 
@@ -25,7 +26,7 @@ public final class Application {
 
     public static void main(final String[] args) throws IOException {
         firstGrammar();
-//        secondGrammar();
+        secondGrammar();
     }
 
     private static void printList(final List<?> list, final BufferedWriter writer) {
@@ -39,61 +40,18 @@ public final class Application {
         });
     }
 
-    private static void printTable(final List<?> list, final BufferedWriter writer) throws IOException {
-        writer.write(String.format("%-15s | %-15s | %-15s | %-15s", "Index", "Info", "Parent", "Right Sibling"));
+    private static void printTable(final List<? extends TableEntry> list, final BufferedWriter writer) throws IOException {
+        writer.write(String.format("%-25s | %-25s | %-25s | %-25s", "Index", "Info", "Parent", "Right Sibling"));
         writer.newLine();
         final var i = new AtomicInteger(0);
         list.forEach(entry -> {
             try {
-                writer.write(String.format("%-15d | %s", i.getAndIncrement(), entry.toString()));
+                writer.write(String.format("%-25d | %s", i.getAndIncrement(), entry.toString()));
                 writer.newLine();
             } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
         });
-    }
-
-    private static void secondGrammar() throws IOException {
-        // initialize a production builder
-        final var productionBuilder = new ContextFreeProductionBuilder();
-
-        GrammarElements<AbstractContextFreeProduction> grammarElements;
-        try {
-            grammarElements = GrammarReader.readGrammarElements(SECOND_GRAMMAR_FILE, productionBuilder);
-        } catch (final IOException e) {
-            System.out.println("Could not read from file: " + e.getMessage());
-            return;
-        }
-
-        final var grammar = new ContextFreeGrammar(
-                grammarElements.nonTerminals(),
-                grammarElements.terminals(),
-                grammarElements.productions(),
-                grammarElements.startingNonTerminal()
-        );
-
-        final var ll1Parser = new LL1ParserImpl(grammar);
-
-        final var list = PIFReader.readFromFile(PIF_FILE);
-        final var output = ll1Parser.parse(list);
-
-        try (final var writer = new BufferedWriter(new FileWriter(FIRST_OUTPUT_FILE))) {
-
-            writer.write("As production string");
-            writer.newLine();
-            printList(output.asProductionString(), writer);
-
-            writer.write("As derivation string");
-            writer.newLine();
-            printList(output.asDerivationString(), writer);
-
-            writer.write("As table");
-            writer.newLine();
-            writer.write(output.asFatherSiblingTable().toString());
-
-        } catch (final IOException exception) {
-            System.out.println(exception.getMessage());
-        }
     }
 
     private static void firstGrammar() throws IOException {
@@ -139,5 +97,46 @@ public final class Application {
         }
     }
 
+    private static void secondGrammar() throws IOException {
+        // initialize a production builder
+        final var productionBuilder = new ContextFreeProductionBuilder();
 
+        GrammarElements<AbstractContextFreeProduction> grammarElements;
+        try {
+            grammarElements = GrammarReader.readGrammarElements(SECOND_GRAMMAR_FILE, productionBuilder);
+        } catch (final IOException e) {
+            System.out.println("Could not read from file: " + e.getMessage());
+            return;
+        }
+
+        final var grammar = new ContextFreeGrammar(
+                grammarElements.nonTerminals(),
+                grammarElements.terminals(),
+                grammarElements.productions(),
+                grammarElements.startingNonTerminal()
+        );
+
+        final var ll1Parser = new LL1ParserImpl(grammar);
+
+        final var list = PIFReader.readFromFile(PIF_FILE);
+        final var output = ll1Parser.parse(list);
+
+        try (final var writer = new BufferedWriter(new FileWriter(SECOND_OUTPUT_FILE))) {
+
+            writer.write("As production string");
+            writer.newLine();
+            printList(output.asProductionString(), writer);
+
+            writer.write("As derivation string");
+            writer.newLine();
+            printList(output.asDerivationString(), writer);
+
+            writer.write("As table");
+            writer.newLine();
+            printTable(output.asFatherSiblingTable(), writer);
+
+        } catch (final IOException exception) {
+            System.out.println(exception.getMessage());
+        }
+    }
 }
